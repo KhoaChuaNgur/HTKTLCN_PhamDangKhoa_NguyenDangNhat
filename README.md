@@ -7,94 +7,91 @@
 
 ## 📝 NHẬT KÝ SỬ DỤNG PROMPT (PROMPT LOG)
 
-### 1. Nguyên văn 100% câu lệnh Prompt của người dùng (User Request)
-> "Bạn là một chuyên gia vibe code bằng google antigravity, bạn hãy tạo cho mình một đoạn promtp để google antigravity tạo cho mình: Trang kho tài liệu, gồm có danh sách toàn bộ tài liệu kèm bộ lọc đa năng. Yêu cầu là phải tích hợp nhất tất cả các kiến thức từ Tuần 3 đến Tuần 5 mà mình đã gửi file word đính kèm " TUAN 3 TOI TUAN 5" gồm có: Semantic HTML, Flex/Grid, Responsive, Design System và Animations) vào 1 sản phẩm duy nhất. Trải nghiệm người dùng (UX): sử dụng các hiệu ứng chuyển động để dẫn dắt hành vi người dùng, tăng tính thẩm mỹ nhưng không làm chậm hiệu suất trang web. Toàn bộ code không sử dụng javascript . Toàn bộ code đưa vào file: trangkhotailieu.html và Tạo ghi chú giải thích từng dòng code sao cho dễ hiểu. Đồng thời  bạn hãy viết nhật kí dùng promt của mình lên file README.md theo đúng yêu cầu: giữ nguyên văn 100% câu prompt của bạn kèm theo phần tóm tắt ngắn gọn các bước xử lý kỹ thuật tương ứng."
+### 📌 LẦN NHẮC 1 (PROMPT 1) — Thiết kế & Viết tiếp các Section Trang Kho Tài Liệu
+
+#### 1. Nguyên văn 100% câu lệnh Prompt của người dùng:
+> "Bạn là một chuyên gia vibe code bằng google antigravity, bạn hãy tạo cho mình một đoạn promtp để google antigravity dựa vào file trangkhotailieu.html đã có sẵn viết tiếp các section nội dung: Trang kho tài liệu, gồm có danh sách toàn bộ tài liệu kèm bộ lọc đa năng. Yêu cầu là phải tích hợp nhất tất cả các kiến thức từ Tuần 3 đến Tuần 5 mà mình đã gửi file word đính kèm " TUAN 3 TOI TUAN 5" gồm có: Semantic HTML, Flex/Grid, Responsive, Design System và Animations) vào 1 sản phẩm duy nhất. Trải nghiệm người dùng (UX): sử dụng các hiệu ứng chuyển động để dẫn dắt hành vi người dùng, tăng tính thẩm mỹ nhưng không làm chậm hiệu suất trang web. Toàn bộ code không sử dụng javascript . Toàn bộ code đưa vào file: trangkhotailieu.html và Tạo ghi chú giải thích từng dòng code sao cho dễ hiểu. Đồng thời  bạn hãy viết nhật kí dùng promt của mình lên file README.md theo đúng yêu cầu: giữ nguyên văn 100% câu prompt của bạn kèm theo phần tóm tắt ngắn gọn các bước xử lý kỹ thuật tương ứng."
+
+#### 2. Tóm tắt ngắn gọn các bước xử lý kỹ thuật tương ứng:
+- **Bước 1: Khai phá & Phân tích yêu cầu giáo trình (Tuần 3 - Tuần 5):**
+  * *Tuần 3:* Semantic HTML5 (`<main>`, `<section>`, `<aside>`, `<article>`), CSS Grid 2 cột (`290px 1fr`), CSS Grid `auto-fit` `minmax(270px, 1fr)`, Flexbox dàn trang 1D, loại bỏ hoàn toàn `float`/`table`, quản lý khoảng cách bằng `gap`.
+  * *Tuần 4:* Kế thừa Design System qua biến `:root` (màu nhận diện loại file, bảng màu chủ đạo, font scale rem, spacing), tư duy Mobile-First đáp ứng đa thiết bị qua Media Queries.
+  * *Tuần 5:* Hiệu ứng chuyển động tối ưu GPU (`transform`, `opacity`) đạt chuẩn 60fps mượt mà, áp dụng cubic-bezier đàn hồi; tích hợp đủ 6 bài tập animation (FAB pulse, 3D flip card, typing effect, parallax banner, hamburger morphing, progress bar fill).
+- **Bước 2: Thiết kế kiến trúc Bộ lọc đa năng Zero-JS:**
+  * Dùng các thẻ `<input type="radio" class="filter-controller" hidden>` ở đầu `<body>`.
+  * Dùng CSS3 `:has()` và `:checked` để ẩn/hiện card tức thì:
+    `body:has(#cat-web:checked) .doc-card:not([data-cat="web"]) { display: none !important; }`
+    `body:has(#fmt-pdf:checked) .doc-card:not([data-fmt="pdf"]) { display: none !important; }`
+  * Hỗ trợ chuyển đổi chế độ xem Lưới (Grid) sang Danh sách (List) thuần CSS.
+- **Bước 3: Xây dựng Quick Preview Modal 100% không dùng JS:**
+  * Kích hoạt bằng `<input type="checkbox" id="modal-preview-toggle">` kết hợp `<label>` nút xem trước và nút đóng "X".
+  * Áp dụng `backdrop-filter: blur(4px)` và hiệu ứng nảy nở `transform: scale(1)`.
+- **Bước 4: Chú thích (Comment) chi tiết toàn bộ dòng code:**
+  * Viết chú giải tiếng Việt tỉ mỉ trong [`trangkhotailieu.html`](trangkhotailieu.html) giải thích rõ Box Model, CSS Grid, Flexbox, cách hoạt động của bộ lọc và lý do chọn `transform` để tối ưu hiệu năng.
 
 ---
 
-### 2. Đoạn Master Prompt tối ưu chuyên sâu dành cho Google Antigravity (Expert Vibe Coding Prompt)
-*Dưới đây là phiên bản Master Prompt được chuẩn hóa theo khung kỹ thuật Prompt Engineering của Google Antigravity để sinh ra toàn bộ trang web chuẩn mực:*
+### 📌 LẦN NHẮC 2 (PROMPT 2) — Ghi Nhật Ký Prompt vào tệp README.md
+
+#### 1. Nguyên văn 100% câu lệnh Prompt của người dùng:
+> "Bây giờ bạn hãy viết nhật kí dùng prompt vào tệp README.md theo đúng yêu cầu giữ nguyên văn 100% câu prompt của bạn kèm theo phần tóm tắt ngắn gọn các bước xử  lý kỹ thuật tương ứng."
+
+#### 2. Tóm tắt ngắn gọn các bước xử lý kỹ thuật tương ứng:
+- **Bước 1: Trích xuất chính xác 100% nguyên văn Prompt:**
+  * Lưu trữ nguyên văn từng ký tự, dấu câu của người dùng cả ở lần nhắc 1 và lần nhắc 2 vào các block trích dẫn (Blockquote Markdown).
+- **Bước 2: Hệ thống hóa nhật ký theo cấu trúc báo cáo chuẩn mực:**
+  * Phân mục rõ ràng giữa Prompt của người dùng (User Request) và các bước kỹ thuật (Technical Steps).
+  * Bổ sung mục Master Vibe Coding Prompt sẵn sàng dùng cho Google Antigravity.
+  * Bổ sung bảng đối chiếu chuẩn đầu ra (LLO) tương ứng từ Tuần 3 đến Tuần 5.
+  * Cung cấp hướng dẫn kiểm thử thực tế trực quan 6 bước trên trình duyệt.
+
+---
+
+## 🤖 MASTER PROMPT TỐI ƯU DÀNH CHO GOOGLE ANTIGRAVITY
 
 ```markdown
 Đóng vai một Kỹ sư Front-End Cao cấp & Chuyên gia Vibe Coding trên Google Antigravity.
-Hãy thiết kế và viết toàn bộ mã nguồn cho trang "Kho Tài Liệu Cá Nhân" vào duy nhất tập tin `trangkhotailieu.html` theo tiêu chuẩn kỹ thuật sau:
+Dựa vào file `trangkhotailieu.html` đã có sẵn trong dự án (kế thừa header, footer và hệ thống style.css của nhóm), hãy viết tiếp toàn bộ các section nội dung hoàn chỉnh cho "Trang kho tài liệu" gồm danh sách toàn bộ tài liệu kèm bộ lọc đa năng theo đúng các tiêu chuẩn kỹ thuật sau:
 
 1. RÀNG BUỘC CÔNG NGHỆ:
-- TUYỆT ĐỐI 100% KHÔNG DÙNG JAVASCRIPT (No inline script, no external JS). Mọi tương tác lọc, chuyển đổi chế độ xem, và mở modal đều vận hành bằng CSS hiện đại (:has(), :checked, Radio/Checkbox Hack).
-- Toàn bộ HTML và CSS tích hợp hoàn chỉnh trong file `trangkhotailieu.html`, có chú thích (comment) chi tiết bằng tiếng Việt cho từng khối mã nguồn.
+- TUYỆT ĐỐI 100% KHÔNG SỬ DỤNG JAVASCRIPT (No inline JS, no external script, zero event listeners).
+- Toàn bộ cơ chế tương tác (bộ lọc đa năng theo chuyên mục, lọc theo định dạng tệp, chuyển đổi chế độ xem Grid/List, đóng/mở Modal xem trước tài liệu, Menu mobile hamburger) phải vận hành hoàn toàn bằng kỹ thuật thuần CSS3 hiện đại (:has(), :checked, Radio/Checkbox Hack, CSS sibling combinators).
+- Toàn bộ mã nguồn đưa vào tập tin `trangkhotailieu.html` và viết chú thích (comment) giải thích chi tiết, dễ hiểu từng dòng/khối code bằng tiếng Việt.
 
-2. TÍCH HỢP KIẾN THỨC TỪ TUẦN 3 ĐẾN TUẦN 5 (GIÁO TRÌNH LẠC HỒNG):
-- TUẦN 3 (CSS Layout & Box Model):
-  + Cấu trúc HTML5 ngữ nghĩa: <header>, <nav>, <main>, <section>, <aside>, <article>, <figure>.
-  + Bố cục tổng thể trang chia 2 cột bằng CSS Grid (Sidebar bộ lọc dính sticky bên trái, Lưới tài liệu bên phải).
-  + Lưới danh sách tài liệu sử dụng CSS Grid auto-fit: `grid-template-columns: repeat(auto-fit, minmax(270px, 1fr))`.
-  + Từng card, menu, header và footer dàn trang linh hoạt bằng Flexbox.
-  + Kiểm soát khoảng cách đồng nhất hoàn toàn bằng `gap` và chuẩn Box Model (`box-sizing: border-box`). Tuyệt đối không dùng float hay table.
-- TUẦN 4 (Design System & Mobile-First Responsive):
-  + Thiết lập Design System với CSS Variables tại `:root` (bảng màu, spacing scale, typography scale rem, border-radius, shadows).
-  + Tư duy Mobile-First: Mặc định hiển thị hoàn hảo 1 cột trên điện thoại (< 600px), tự co giãn 2 cột trên Tablet (600px - 1024px), và mở rộng bố cục đa cột trên Desktop (> 1024px).
-  + Hình ảnh và thumbnail đáp ứng: `max-width: 100%; height: auto; display: block;`. Không phát sinh thanh cuộn ngang (Horizontal scroll).
-- TUẦN 5 (CSS Animations, Micro-interactions & GPU Performance):
-  + Tối ưu GPU Acceleration: Chỉ chuyển động bằng thuộc tính `transform` và `opacity` (tránh Reflow / Repaint).
-  + Hiệu ứng thẻ Card: Nâng thẻ khi hover (`transform: translateY(-6px)`), bóng đổ tỏa mềm mại, xoay icon tệp.
-  + Hiệu ứng @keyframes: `fadeInUp` xuất hiện so le (staggered animation), `pulseGlow` cho huy hiệu Hot/Mới và nút FAB.
-  + Nút Floating Action Button (FAB) ở góc dưới phải với animation xung nhịp liên tục.
-  + Modal xem trước tài liệu (Quick Preview Modal) thuần CSS mở/đóng mượt mà không dùng JS.
+2. TÍCH HỢP TOÀN DIỆN KIẾN THỨC TỪ TUẦN 3 ĐẾN TUẦN 5 (GIÁO TRÌNH LẠC HỒNG):
+- TUẦN 3: CSS LAYOUT SYSTEM (FLEXBOX & GRID):
+  + Cấu trúc HTML5 Semantic: Sử dụng đúng vai trò của <main>, <section>, <aside>, <article>, <figure>, <nav>, <header>, <footer>.
+  + Bố cục phân chia tổng thể bằng CSS Grid 2 cột: Cột trái (<aside class="filter-panel">) rộng 290px cố định/sticky và Cột phải (<section class="content-area">) chiếm toàn bộ không gian còn lại (1fr).
+  + Lưới hiển thị danh sách tài liệu sử dụng CSS Grid tự động chia cột thông minh: `grid-template-columns: repeat(auto-fit, minmax(270px, 1fr))`.
+  + Từng thành phần con (Thanh thống kê Hero, Toolbar, Thẻ Card tài liệu, Thanh đánh giá, Nút bấm) căn chỉnh đa chiều linh hoạt bằng CSS Flexbox.
+  + Kiểm soát khoảng cách đồng nhất hoàn toàn bằng thuộc tính `gap`, loại bỏ 100% float hay layout table cũ kỹ; áp dụng triệt để Box Model (box-sizing: border-box).
+- TUẦN 4: DESIGN SYSTEM & TƯ DUY RESPONSIVE (MOBILE-FIRST):
+  + Thiết lập Design System với CSS Variables tại `:root` (bảng màu phân loại PDF/DOCX/PPTX/ZIP, màu thương hiệu, typography scale rem, spacing scale, border-radius, shadows, timing curves).
+  + Tư duy thiết kế Mobile-First: Mặc định hiển thị chuẩn xác 1 cột trên điện thoại (< 600px), tự co giãn 2 cột trên Tablet (600px - 1024px), và mở rộng bố cục đa cột trên Desktop (> 1024px).
+  + Đảm bảo ảnh đại diện, thumbnail co giãn linh hoạt (`max-width: 100%; height: auto;`), kiểm soát chặt chẽ Viewport, tuyệt đối không bị lỗi tràn ngang màn hình (Horizontal scroll).
+- TUẦN 5: HIỆU ỨNG CHUYỂN ĐỘNG & TỐI ƯU HIỆU NĂNG (CSS ANIMATIONS & UX):
+  + Tối ưu phần cứng GPU (Hardware Acceleration): 100% animation và transition chỉ can thiệp vào `transform` và `opacity` (tuyệt đối không dùng top, left, width, margin gây hiện tượng giật Reflow/Repaint), đảm bảo tốc độ khung hình 60 FPS mượt mà.
+  + Áp dụng hàm gia tốc tự nhiên: `--ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1)` cho phản hồi đàn hồi và `--ease-smooth: cubic-bezier(0.4, 0, 0.2, 1)` cho các hiệu ứng chuyển cảnh dài.
+  + Tích hợp đầy đủ các bài tập chuyển động Tuần 5:
+    * Bài 1: Nút nổi tương tác (FAB) ở góc phải với animation @keyframes pulse co giãn thu hút chú ý.
+    * Bài 2: Thẻ đề cử tiêu biểu lật mặt 180° (3D Card Flip) sử dụng perspective, transform-style: preserve-3d, backface-visibility: hidden.
+    * Bài 3: Hiệu ứng máy đánh chữ (Typing Effect) trên Banner giới thiệu bằng @keyframes.
+    * Bài 4: Khu vực Banner kêu gọi đóng góp với hiệu ứng Parallax Background (background-attachment: fixed).
+    * Bài 5: Menu Hamburger 3 gạch biến đổi mượt mà thành dấu "X" khi mở menu trên di động.
+    * Bài 6: Thanh tiến trình độ tin cậy của tài liệu tự động chạy từ 0% đến giá trị thực (Progress bar animation).
+  + Micro-interactions: Thẻ card nhấc lên 6px (`translateY(-6px)`), xoay nhẹ icon tệp (`rotate(-4deg)`), bóng đổ tỏa sâu khi rê chuột (hover).
 
-3. TÍNH NĂNG KHO TÀI LIỆU & BỘ LỌC ĐA NĂNG:
-- Thanh Hero giới thiệu kèm thống kê số lượng tài liệu, dung lượng, lượt tải.
-- Bộ lọc đa năng gồm:
-  + Lọc theo Chuyên mục (Tất cả, Web & UI, HĐH & Mạng, UI/UX Design, AI, Đề thi).
-  + Lọc theo Định dạng tệp (Tất cả, PDF, DOCX, PPTX, ZIP).
-  + Bộ chuyển đổi chế độ xem: Chế độ Lưới (Card Grid) và Chế độ Danh sách (List View).
-- Danh sách tài liệu phong phú, mỗi thẻ có: icon định dạng tệp, tiêu đề, mô tả tóm tắt, dung lượng, rating sao ⭐, thanh tiến trình % tin cậy động, nút Xem trước và Tải về.
+3. CÁC SECTION NỘI DUNG CẦN TRIỂN KHAI TRONG `trangkhotailieu.html`:
+- Section 1 (Hero Banner): Giới thiệu kho tri thức, huy hiệu nhịp đập, hiệu ứng máy đánh chữ và thanh thống kê chỉ số số lượng tài liệu/dung lượng/lượt tải.
+- Section 2 (Thanh điều khiển & Bộ lọc đa năng):
+  + Cột Filter (<aside>): Lọc theo chuyên mục (Tất cả, Web, HĐH & Mạng, UI/UX, AI, Đề thi), lọc theo định dạng (PDF, DOCX, PPTX, ZIP), nút Reset đặt lại bộ lọc.
+  + Toolbar (<section>): Ô tìm kiếm giao diện chuẩn UX, bộ chuyển đổi chế độ hiển thị Lưới thẻ (Grid) / Danh sách (List).
+  + Thẻ đề cử tiêu biểu 3D Card Flip.
+  + Danh sách toàn bộ tài liệu (Cards Grid) gồm ít nhất 8 tài liệu đa dạng chuyên mục và định dạng, có đầy đủ icon, nhãn HOT/MỚI, rating sao, thanh tiến trình % tin cậy, nút Xem trước và Tải về.
+- Section 3 (Parallax Call-To-Action Banner): Kêu gọi sinh viên đóng góp tài liệu với ảnh nền Parallax có chiều sâu 3D.
+- Section 4 (Quick Preview Modal): Cửa sổ xem trước tóm tắt tài liệu popup thuần CSS, có nút đóng "X" xoay 90° khi hover.
+- Section 5 (Floating Action Button - FAB): Nút nổi tròn ở góc dưới bên phải màn hình để đóng góp nhanh tài liệu.
 ```
-
----
-
-## 🛠️ TÓM TẮT CÁC BƯỚC XỬ LÝ KỸ THUẬT TƯƠNG ỨNG
-
-### Bước 1: Trích xuất và phân tích yêu cầu từ giáo trình (Tuần 3 - Tuần 5)
-- Giải nén và đọc tài liệu `TUAN 3 TOI TUAN 5.docx` để nắm trọn vẹn chuẩn đầu ra (LLO) của 3 tuần:
-  * **Tuần 3:** CSS Grid Layout, Flexbox căn chỉnh 1 chiều, mô hình Box Model, cấm dùng `float`/`table`, quản lý khoảng cách bằng `gap`.
-  * **Tuần 4:** Hệ thống Design System qua biến `:root`, triết lý thiết kế Mobile-First, các điểm gãy Media Queries (375px / 600px / 768px / 1024px), đơn vị tương đối `rem`.
-  * **Tuần 5:** CSS Transitions cho tương tác, `@keyframes` (FadeIn, Pulse, Progress bar), tối ưu hiệu năng phần cứng bằng `transform` & `opacity` thay vì thay đổi kích thước gây giật lag (Reflow).
-
-### Bước 2: Thiết kế kiến trúc "Bộ lọc Đa năng Thuần CSS" (Zero JavaScript)
-- Thay vì dùng JavaScript bắt sự kiện `click` và lọc DOM, chúng tôi sử dụng kỹ thuật tân tiến:
-  * Đặt các thẻ `<input type="radio" class="filter-controller" hidden>` ở đầu trang.
-  * Tận dụng bộ chọn `:has()` và `:checked` của CSS3 hiện đại:
-    + Khi chọn chuyên mục Web: `body:has(#cat-web:checked) .doc-card:not([data-cat="web"]) { display: none !important; }`
-    + Khi chọn định dạng PDF: `body:has(#fmt-pdf:checked) .doc-card:not([data-fmt="pdf"]) { display: none !important; }`
-    + Khi chọn chế độ Danh sách: `body:has(#view-list:checked) .docs-grid { grid-template-columns: 1fr; }` và chuyển flex-direction của thẻ card thành hàng ngang.
-  * Tương tự, Modal xem trước nhanh (Quick Preview Modal) hoạt động bằng `<input type="checkbox" id="modal-preview-toggle">` và liên kết với `<label>` của nút "Xem trước" và nút đóng "X".
-
-### Bước 3: Xây dựng cấu trúc HTML5 ngữ nghĩa (Semantic HTML5)
-- Toàn bộ trang được tổ chức mạch lạc:
-  * `<header>` và `<nav>`: Kế thừa menu điều hướng responsive và hamburger thuần CSS của hệ thống dự án MyVault.
-  * `<main id="main-content">`: Vùng nội dung trung tâm của trang kho tài liệu.
-  * `<section class="repo-hero">`: Khối giới thiệu tổng quan, huy hiệu động và thanh thống kê chỉ số.
-  * `<aside class="filter-panel">`: Cột thanh điều khiển và bộ lọc đa năng (chuyên mục, định dạng, nút đặt lại).
-  * `<section class="content-area">`: Vùng hiển thị tài liệu, bao gồm toolbar tìm kiếm và bộ chuyển đổi Grid/List.
-  * `<article class="doc-card">`: Từng mục tài liệu độc lập với các thuộc tính dữ liệu `data-cat` và `data-fmt`.
-
-### Bước 4: Thiết lập Design System và hiệu ứng Animations tối ưu GPU
-- Khai báo hệ thống biến `:root` mở rộng cho tài liệu (`--color-pdf`, `--color-docx`, `--color-pptx`, `--color-zip`, bảng gia tốc `--ease-bounce`).
-- Xây dựng đầy đủ các bài tập chuyển động Tuần 5:
-  1. `@keyframes fadeInUp`: Hiệu ứng thẻ tài liệu trượt nhẹ từ dưới lên và mờ dần khi mở trang, áp dụng độ trễ `animation-delay` so le (staggered).
-  2. `@keyframes pulseGlow`: Hiệu ứng nhịp đập co giãn cho huy hiệu HOT/MỚI và nút FAB nổi ở góc màn hình (Bài tập 1 Tuần 5).
-  3. `@keyframes fillProgressBar`: Tự động lấp đầy thanh tiến trình đánh giá tài liệu từ 0% lên giá trị thực (Bài tập 6 Tuần 5).
-  4. `@keyframes typingText` & `@keyframes blinkCursor`: Hiệu ứng máy đánh chữ chạy chữ tuần tự trên Banner Hero (Bài tập 3 Tuần 5).
-  5. Hiệu ứng **3D Card Flip Showcase** (`perspective: 1000px`, `preserve-3d`, `backface-visibility: hidden`): Thẻ tài liệu tiêu biểu lật mặt 180 độ khi rê chuột (Bài tập 2 Tuần 5).
-  6. Menu Hamburger 3 gạch chuyển đổi thành dấu "X" mượt mà (Bài tập 5 Tuần 5).
-  7. Hover Micro-interactions: Nhấc thẻ tài liệu lên 6px (`translateY(-6px)`), xoay nhẹ icon tệp (`rotate(-4deg)`), làm sâu bóng đổ `box-shadow` giúp người dùng có cảm giác phản hồi tức thì và sinh động.
-
-### Bước 5: Viết chú thích (Comments) giải thích chi tiết từng dòng code
-- Bổ sung hệ thống chú thích tiếng Việt rõ ràng, mạch lạc xuyên suốt file `trangkhotailieu.html`, giải thích:
-  * Ý nghĩa và vai trò của từng thẻ HTML Semantic.
-  * Cơ chế hoạt động của Box Model, Flexbox và CSS Grid.
-  * Nguyên lý hoạt động của bộ lọc không dùng JS qua `:has()` và `:checked`.
-  * Lý do chọn thuộc tính `transform` thay vì `top/left` để đạt hiệu năng tối đa 60fps.
 
 ---
 
