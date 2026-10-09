@@ -1,42 +1,1297 @@
 <!DOCTYPE html>
+<!-- ==========================================================================
+     TẬP TIN: trangkhotailieu.html
+     DỰ ÁN: Hệ thống Kho tài liệu cá nhân (MyVault)
+     MÔ TẢ: Trang kho tài liệu tích hợp toàn diện kiến thức Tuần 3 đến Tuần 5
+            - Tuần 3: Semantic HTML5, CSS Grid (2D layout), Flexbox (1D alignment), Box Model.
+            - Tuần 4: Design System (:root variables), Mobile-First, Media Queries đa thiết bị.
+            - Tuần 5: CSS Animations (@keyframes), Transitions, Tối ưu phần cứng GPU, UX mượt mà.
+     ĐẶC BIỆT: 100% KHÔNG DÙNG JAVASCRIPT - Bộ lọc & Modal hoạt động thuần CSS.
+     ========================================================================== -->
 <html lang="vi">
 <head>
+    <!-- Thiết lập bộ mã ký tự chuẩn UTF-8 hỗ trợ tiếng Việt có dấu đầy đủ -->
     <meta charset="UTF-8">
+
+    <!-- Thẻ meta viewport bắt buộc (Kiến thức Tuần 4) để kích hoạt chuẩn Responsive trên mọi thiết bị -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MyVault — Kho tài liệu cá nhân của bạn">
-    <title>Kho tài liệu — MyVault</title>
+
+    <!-- Thẻ mô tả chuẩn SEO & hỗ trợ truy cập -->
+    <meta name="description" content="MyVault - Kho lưu trữ tài liệu, giáo trình, đồ án và mã nguồn cá nhân chất lượng cao với bộ lọc đa năng thuần CSS">
+
+    <!-- Tiêu đề trang hiển thị trên tab trình duyệt -->
+    <title>Kho tài liệu &amp; Bộ lọc Đa năng — MyVault</title>
+
+    <!-- Liên kết stylesheet hệ thống chia sẻ của dự án -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- ======================================================================
+         PHẦN STYLE NỘI BỘ (INTERNAL CSS)
+         Được xây dựng theo Design System chuẩn xác, kế thừa biến :root,
+         đáp ứng tư duy Mobile-First và hiệu ứng chuyển động tối ưu GPU.
+         Có chú thích chi tiết từng thuộc tính để người đọc dễ dàng học hỏi.
+         ====================================================================== -->
+    <style>
+        /* ====================================================================
+           1. THIẾT LẬP BỔ SUNG CHO DESIGN SYSTEM (:root) - KIẾN THỨC TUẦN 4
+           Bổ sung các biến chuyên biệt cho Kho tài liệu (màu định dạng file, tag...)
+           ==================================================================== */
+        :root {
+            /* Màu sắc phân loại theo định dạng tài liệu */
+            --color-pdf: #EF4444;       /* Màu đỏ đặc trưng cho tài liệu PDF */
+            --color-pdf-bg: #FEF2F2;    /* Nền đỏ nhạt làm nổi bật tag PDF */
+            --color-docx: #2563EB;      /* Màu xanh dương cho tài liệu Word */
+            --color-docx-bg: #EFF6FF;   /* Nền xanh nhạt cho Word */
+            --color-pptx: #F97316;      /* Màu cam cho slide trình chiếu PowerPoint */
+            --color-pptx-bg: #FFF7ED;   /* Nền cam nhạt cho Slide */
+            --color-zip: #10B981;       /* Màu xanh lục cho mã nguồn / nén ZIP */
+            --color-zip-bg: #ECFDF5;    /* Nền xanh lục nhạt cho ZIP */
+            
+            /* Màu sắc hỗ trợ tương tác và trạng thái */
+            --color-star: #F59E0B;      /* Màu vàng cam cho sao đánh giá */
+            --color-badge-hot: #DC2626; /* Màu đỏ thẫm cho huy hiệu Hot */
+            --color-card-border: #E2E8F0;/* Viền thẻ tài liệu mặc định */
+            --color-card-hover: #3B82F6; /* Viền thẻ khi được người dùng rê chuột */
+            
+            /* Tỷ lệ thời gian và gia tốc chuyển động tự nhiên (Cubic-Bezier) - Kiến thức Tuần 5 */
+            --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ====================================================================
+           2. CÁC HIỆU ỨNG CHUYỂN ĐỘNG KEYFRAMES (CSS ANIMATIONS) - KIẾN THỨC TUẦN 5
+           Tối ưu 100% bằng Transform & Opacity (Tận dụng GPU Acceleration)
+           ==================================================================== */
+
+        /* Hiệu ứng 1: Xuất hiện từ dưới lên kết hợp làm mờ (Fade In Up) */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(24px); /* Dịch chuyển nhẹ xuống dưới */
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);    /* Trở về vị trí chuẩn */
+            }
+        }
+
+        /* Hiệu ứng 2: Nhịp đập phập phồng (Pulse) thu hút sự chú ý của người dùng */
+        @keyframes pulseGlow {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5);
+            }
+            70% {
+                transform: scale(1.05);      /* Phóng to nhẹ 5% */
+                box-shadow: 0 0 0 12px rgba(37, 99, 235, 0); /* Vòng sáng lan tỏa và biến mất */
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+            }
+        }
+
+        /* Hiệu ứng 3: Tia sáng quét qua (Shimmer) trên banner tạo điểm nhấn hiện đại */
+        @keyframes shimmerWave {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        /* Hiệu ứng 4: Vòng xoay vô hạn cho icon đồng bộ / tải nhanh */
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Hiệu ứng 5: Tự động chạy thanh tiến trình dung lượng / đánh giá từ 0% đến đích (Bài tập 6 Tuần 5) */
+        @keyframes fillProgressBar {
+            from { width: 0%; }
+            to { width: var(--target-width, 85%); }
+        }
+
+        /* Hiệu ứng 6: Typing Effect - Hiệu ứng máy đánh chữ chạy chữ tuần tự (Bài tập 3 Tuần 5) */
+        @keyframes typingText {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        /* Hiệu ứng nhấp nháy con trỏ máy đánh chữ */
+        @keyframes blinkCursor {
+            0%, 100% { border-color: var(--color-active); }
+            50% { border-color: transparent; }
+        }
+
+        /* Kiểu dáng cho khối chữ máy đánh chữ (Typing Effect Box) */
+        .typing-wrapper {
+            display: inline-block;
+            max-width: 100%;
+            overflow: hidden;
+            margin-top: 2px;
+        }
+
+        .typing-line {
+            display: inline-block;
+            font-size: var(--font-size-sm);
+            color: var(--color-active);
+            font-weight: var(--font-weight-medium);
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid var(--color-active);
+            width: 0;
+            animation:
+                typingText 3.5s steps(48, end) 0.5s forwards,
+                blinkCursor 0.8s step-end infinite;
+        }
+
+        /* ====================================================================
+           HIỆU ỨNG CARD FLIP 3D (BÀI TẬP 2 TUẦN 5) - THẺ TIÊU BIỂU LẬT MẶT 180 ĐỘ
+           Áp dụng perspective, transform-style: preserve-3d và backface-visibility: hidden
+           ==================================================================== */
+        .featured-flip-card-wrapper {
+            perspective: 1000px; /* Tạo không gian phối cảnh 3D có chiều sâu */
+            margin-bottom: var(--space-lg);
+            width: 100%;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            min-height: 180px;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-style: preserve-3d; /* Bảo toàn chiều sâu 3D cho các mặt bên trong */
+            cursor: pointer;
+            border-radius: var(--radius-lg);
+        }
+
+        /* Khi người dùng di chuột (hover) -> Thẻ tự động xoay lật 180 độ theo trục Y */
+        .featured-flip-card-wrapper:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden; /* Ẩn mặt úp khi đang quay đi */
+            border-radius: var(--radius-lg);
+            padding: var(--space-md) var(--space-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-md);
+        }
+
+        /* Mặt trước (Front Face): Hiển thị bìa sách, tên tài liệu, huy hiệu bình chọn */
+        .flip-card-front {
+            background: linear-gradient(135deg, #EFF6FF 0%, #FFFFFF 100%);
+            border-left: 6px solid var(--color-primary);
+        }
+
+        /* Mặt sau (Back Face): Xoay sẵn 180 độ, nền sẫm, hiện thông tin chi tiết */
+        .flip-card-back {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            color: var(--color-white);
+            border-left: 6px solid var(--color-active);
+            transform: rotateY(180deg);
+        }
+
+
+        /* ====================================================================
+           3. RESET CÁC INPUT ĐIỀU KHIỂN (BỘ LỌC THUẦN CSS KHÔNG JS)
+           Ẩn hoàn toàn các radio inputs vật lý nhưng vẫn nhận sự kiện click qua label
+           ==================================================================== */
+        .filter-controller {
+            position: absolute; /* Rút input khỏi luồng giao diện */
+            opacity: 0;         /* Làm trong suốt hoàn toàn */
+            pointer-events: none;/* Không chặn thao tác rê chuột */
+            width: 0;
+            height: 0;
+            margin: 0;
+        }
+
+        /* ====================================================================
+           4. BANNER GIỚI THIỆU KHO TÀI LIỆU (HERO SECTION)
+           Sử dụng Flexbox để căn chỉnh đa chiều, Box Model kiểm soát padding
+           ==================================================================== */
+        .repo-hero {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); /* Nền chuyển sắc sâu lắng */
+            color: var(--color-white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl) var(--space-md);
+            margin-bottom: var(--space-xl);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden; /* Ngăn các phần tử con tràn viền bo */
+            animation: fadeInUp 0.6s var(--ease-smooth); /* Hiệu ứng hiện trang khi tải */
+        }
+
+        /* Hoa văn trang trí mờ phía sau banner */
+        .repo-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(37, 99, 235, 0) 70%);
+            pointer-events: none;
+        }
+
+        /* Khối chứa nội dung chính của Hero */
+        .repo-hero-content {
+            position: relative;
+            z-index: 1; /* Nổi lên trên lớp hoa văn nền */
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        /* Huy hiệu thông báo trạng thái với hiệu ứng Pulse (Tuần 5) */
+        .hero-badge {
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--color-active);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: var(--space-xs) var(--space-md);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            animation: pulseGlow 2.5s infinite var(--ease-smooth); /* Xung nhịp liên tục */
+        }
+
+        .hero-title {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            line-height: var(--line-height-tight);
+            color: var(--color-white);
+        }
+
+        .hero-title span {
+            color: var(--color-active); /* Tạo điểm nhấn chữ xanh sky */
+        }
+
+        .hero-desc {
+            font-size: var(--font-size-sm);
+            color: var(--color-footer-text);
+            line-height: var(--line-height-relaxed);
+            max-width: 680px;
+        }
+
+        /* Thanh thống kê nhanh (Quick Stats) dùng Flexbox co giãn đa chiều */
+        .hero-stats-bar {
+            display: flex;
+            flex-wrap: wrap; /* Tự động xuống dòng trên mobile */
+            gap: var(--space-md);
+            margin-top: var(--space-sm);
+            padding-top: var(--space-md);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            min-width: 110px;
+        }
+
+        .stat-number {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-white);
+        }
+
+        .stat-label {
+            font-size: var(--font-size-xs);
+            color: var(--color-footer-text);
+        }
+
+        /* ====================================================================
+           5. KHUNG BỐ CỤC CHÍNH (REPOSITORY LAYOUT): GRID 2 CỘT (DESKTOP) & 1 CỘT (MOBILE)
+           Áp dụng triệt để kiến thức Tuần 3 (CSS Grid) và Tuần 4 (Mobile-First)
+           ==================================================================== */
+        .repo-layout {
+            display: grid;
+            grid-template-columns: 1fr; /* Mặc định Mobile First: 1 cột xếp chồng */
+            gap: var(--space-xl);
+            align-items: start;
+        }
+
+        /* Trên màn hình Laptop & Desktop (>= 1024px): Chia 2 cột tỷ lệ Sidebar 280px và Main tự do */
+        @media (min-width: 1024px) {
+            .repo-layout {
+                grid-template-columns: 290px 1fr; /* Cột bộ lọc cố định 290px, cột tài liệu chiếm phần còn lại */
+                gap: var(--space-xl);
+            }
+        }
+
+        /* ====================================================================
+           6. KHU VỰC THANH ĐIỀU KHIỂN & BỘ LỌC ĐA NĂNG (FILTER SIDEBAR)
+           Thiết kế dạng Card bo tròn, dính cố định khi cuộn (Sticky Sidebar)
+           ==================================================================== */
+        .filter-panel {
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+            /* Trên Desktop: Sidebar bám theo màn hình khi cuộn nội dung dài */
+            position: sticky;
+            top: 80px;
+            z-index: 10;
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: var(--space-sm);
+        }
+
+        .filter-header-title {
+            font-size: var(--font-size-md);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        /* Nút hoàn tác bộ lọc về trạng thái "Tất cả" thuần CSS */
+        .btn-reset-filters {
+            font-size: var(--font-size-xs);
+            color: var(--color-primary);
+            text-decoration: underline;
+            cursor: pointer;
+            transition: color var(--transition-fast);
+        }
+
+        .btn-reset-filters:hover {
+            color: var(--color-primary-dark);
+        }
+
+        /* Khối nhóm các tiêu chí lọc (Chuyên mục, Định dạng, Chế độ xem) */
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .filter-group-title {
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-xs);
+        }
+
+        /* Danh sách các nút chọn danh mục (Pills / Chips) */
+        .filter-pills {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        /* Từng nhãn (Label) đóng vai trò là Nút bấm lọc cho người dùng */
+        .filter-pill-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            border: 1px solid transparent;
+            cursor: pointer;
+            user-select: none;
+            /* Hiệu ứng chuyển trạng thái mượt mà bằng CSS Transition */
+            transition:
+                background-color var(--transition-normal),
+                color var(--transition-normal),
+                border-color var(--transition-normal),
+                transform var(--transition-fast),
+                box-shadow var(--transition-fast);
+        }
+
+        /* Hiệu ứng hover nhấc nhẹ và đổi màu nền */
+        .filter-pill-label:hover {
+            background-color: #E2E8F0;
+            color: var(--color-primary);
+            transform: translateX(3px); /* Nhích nhẹ sang phải dẫn dắt thị giác người dùng */
+        }
+
+        /* Số đếm số lượng tài liệu trong từng danh mục */
+        .pill-count {
+            font-size: var(--font-size-xs);
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            background-color: rgba(0, 0, 0, 0.06);
+            color: var(--color-text-muted);
+            transition: background-color var(--transition-fast), color var(--transition-fast);
+        }
+
+        /* Nhóm nút lọc theo định dạng dạng thẻ Tag nằm ngang (Flex Wrap) */
+        .format-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+        }
+
+        .format-tag-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            background-color: var(--color-background);
+            border: 1px solid var(--color-border);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-muted);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .format-tag-label:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+            transform: translateY(-2px);
+        }
+
+        /* ====================================================================
+           7. CƠ CHẾ BẬT SÁNG BỘ LỌC ĐANG CHỌN (ACTIVE STATE) BẰNG CSS THUẦN
+           Sử dụng CSS Selector :has() và Selector kết hợp tân tiến
+           ==================================================================== */
+        /* Trạng thái Active cho Danh mục (Categories) */
+        body:has(#cat-all:checked) label[for="cat-all"],
+        body:has(#cat-web:checked) label[for="cat-web"],
+        body:has(#cat-os:checked) label[for="cat-os"],
+        body:has(#cat-design:checked) label[for="cat-design"],
+        body:has(#cat-ai:checked) label[for="cat-ai"],
+        body:has(#cat-exam:checked) label[for="cat-exam"] {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            border-color: var(--color-primary-dark);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+            transform: translateX(4px);
+        }
+
+        body:has(#cat-all:checked) label[for="cat-all"] .pill-count,
+        body:has(#cat-web:checked) label[for="cat-web"] .pill-count,
+        body:has(#cat-os:checked) label[for="cat-os"] .pill-count,
+        body:has(#cat-design:checked) label[for="cat-design"] .pill-count,
+        body:has(#cat-ai:checked) label[for="cat-ai"] .pill-count,
+        body:has(#cat-exam:checked) label[for="cat-exam"] .pill-count {
+            background-color: rgba(255, 255, 255, 0.25);
+            color: var(--color-white);
+        }
+
+        /* Trạng thái Active cho Định dạng (File Formats) */
+        body:has(#fmt-all:checked) label[for="fmt-all"],
+        body:has(#fmt-pdf:checked) label[for="fmt-pdf"],
+        body:has(#fmt-docx:checked) label[for="fmt-docx"],
+        body:has(#fmt-pptx:checked) label[for="fmt-pptx"],
+        body:has(#fmt-zip:checked) label[for="fmt-zip"] {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            border-color: var(--color-primary);
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+        }
+
+        /* Trạng thái Active cho Chế độ xem (View Modes) */
+        body:has(#view-grid:checked) label[for="view-grid"],
+        body:has(#view-list:checked) label[for="view-list"] {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            border-color: var(--color-primary);
+        }
+
+        /* ====================================================================
+           8. KHU VỰC NỘI DUNG CHÍNH (MAIN REPOSITORY CONTENT)
+           Thanh công cụ lọc trên cùng + Lưới thẻ danh sách tài liệu
+           ==================================================================== */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        /* Thanh thanh công cụ trên đầu (Toolbar: Search view mockup + View switcher) */
+        .repo-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--color-surface);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+            gap: var(--space-md);
+        }
+
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            flex: 1;
+            min-width: 240px;
+        }
+
+        /* Khung tìm kiếm giả lập tĩnh không cần JS (CSS-styled input) */
+        .search-box-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 360px;
+        }
+
+        .search-box-input {
+            width: 100%;
+            padding: 8px 12px 8px 36px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-family: inherit;
+            color: var(--color-text);
+            background-color: var(--color-background);
+            transition: all var(--transition-fast);
+        }
+
+        .search-box-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background-color: var(--color-white);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .search-icon-symbol {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-muted);
+            pointer-events: none;
+            font-size: 0.9rem;
+        }
+
+        /* Bộ chuyển đổi kiểu xem Lưới / Danh sách (Grid / List Switcher) */
+        .view-mode-group {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            background-color: var(--color-background);
+            padding: 3px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+
+        .view-mode-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 10px;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            color: var(--color-text-muted);
+            transition: all var(--transition-fast);
+        }
+
+        .view-mode-btn:hover {
+            color: var(--color-text);
+        }
+
+        /* ====================================================================
+           9. LƯỚI DANH SÁCH TÀI LIỆU (DOCUMENTS GRID) - BỐ CỤC CHÍNH TUẦN 3
+           Dùng CSS Grid 'auto-fit' và 'minmax' linh hoạt tuyệt đối
+           ==================================================================== */
+        .docs-grid {
+            display: grid;
+            /* Công thức vàng Tuần 3: Tự động chia cột tối thiểu 270px, tối đa chiếm đều 1fr */
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: var(--space-lg);
+            align-items: stretch; /* Đảm bảo các thẻ card có chiều cao bằng nhau */
+        }
+
+        /* ====================================================================
+           10. THẺ TÀI LIỆU (DOCUMENT CARD) - FLEXBOX + MICRO-INTERACTIONS
+           Đầy đủ hiệu ứng Hover Lift, 3D Tilt nhẹ và phân màu định dạng
+           ==================================================================== */
+        .doc-card {
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Đẩy phần footer thẻ sát đáy */
+            gap: var(--space-md);
+            position: relative;
+            overflow: hidden;
+            /* Tối ưu hiệu suất bằng GPU khi hover chuyển động */
+            will-change: transform, box-shadow;
+            transition:
+                transform 0.35s var(--ease-bounce),
+                box-shadow 0.35s var(--ease-smooth),
+                border-color 0.25s ease;
+            animation: fadeInUp 0.5s var(--ease-smooth) both;
+        }
+
+        /* Độ trễ xuất hiện theo thứ tự (Staggered Animation Effect - Tuần 5) */
+        .doc-card:nth-child(1) { animation-delay: 0.05s; }
+        .doc-card:nth-child(2) { animation-delay: 0.10s; }
+        .doc-card:nth-child(3) { animation-delay: 0.15s; }
+        .doc-card:nth-child(4) { animation-delay: 0.20s; }
+        .doc-card:nth-child(5) { animation-delay: 0.25s; }
+        .doc-card:nth-child(6) { animation-delay: 0.30s; }
+        .doc-card:nth-child(7) { animation-delay: 0.35s; }
+        .doc-card:nth-child(8) { animation-delay: 0.40s; }
+
+        /* Hiệu ứng HOVER CARD (Tuần 5): Nhấc thẻ lên 6px, đổ bóng mềm mại */
+        .doc-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 28px -6px rgba(0, 0, 0, 0.12), 0 8px 12px -4px rgba(0, 0, 0, 0.06);
+            border-color: var(--color-card-hover);
+        }
+
+        /* Vệt màu trên đỉnh card nhận diện định dạng */
+        .doc-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: var(--badge-color, var(--color-primary));
+            transition: height var(--transition-fast);
+        }
+
+        .doc-card:hover::before {
+            height: 6px; /* Dày lên khi người dùng tương tác */
+        }
+
+        /* Phân loại vệt màu theo thuộc tính dữ liệu data-fmt */
+        .doc-card[data-fmt="pdf"] { --badge-color: var(--color-pdf); }
+        .doc-card[data-fmt="docx"] { --badge-color: var(--color-docx); }
+        .doc-card[data-fmt="pptx"] { --badge-color: var(--color-pptx); }
+        .doc-card[data-fmt="zip"] { --badge-color: var(--color-zip); }
+
+        /* Phần đầu của thẻ (Card Header): Icon + Badges thể loại */
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: var(--space-sm);
+        }
+
+        /* Khối biểu tượng tệp đồ họa với kích thước chuẩn */
+        .file-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            transition: transform var(--transition-normal);
+        }
+
+        .doc-card:hover .file-icon-box {
+            transform: scale(1.1) rotate(-4deg); /* Xoay và phóng to nhẹ tạo tính sinh động */
+        }
+
+        .icon-pdf { background-color: var(--color-pdf-bg); color: var(--color-pdf); }
+        .icon-docx { background-color: var(--color-docx-bg); color: var(--color-docx); }
+        .icon-pptx { background-color: var(--color-pptx-bg); color: var(--color-pptx); }
+        .icon-zip { background-color: var(--color-zip-bg); color: var(--color-zip); }
+
+        /* Nhóm huy hiệu trạng thái: Hot / Mới / Đề xuất */
+        .card-badges {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .badge-tag {
+            font-size: 0.6875rem;
+            font-weight: var(--font-weight-bold);
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+            letter-spacing: 0.04em;
+        }
+
+        .badge-hot {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--color-pdf);
+            animation: pulseGlow 2s infinite; /* Nhịp thở cho thẻ Hot */
+        }
+
+        .badge-new {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--color-zip);
+        }
+
+        .badge-size {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-muted);
+            font-weight: var(--font-weight-medium);
+        }
+
+        /* Thân thẻ (Card Body): Tên tài liệu, mô tả tóm tắt, tag chủ đề */
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .card-category-name {
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .card-title {
+            font-size: var(--font-size-md);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text);
+            line-height: var(--line-height-normal);
+            /* Giới hạn hiển thị 2 dòng với hiệu ứng cắt chữ */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            transition: color var(--transition-fast);
+        }
+
+        .doc-card:hover .card-title {
+            color: var(--color-primary);
+        }
+
+        .card-excerpt {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-muted);
+            line-height: var(--line-height-normal);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Đánh giá sao ⭐ & thông số tải về */
+        .card-meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: var(--font-size-xs);
+            color: var(--color-text-muted);
+            padding-top: var(--space-xs);
+            border-top: 1px dashed var(--color-border);
+        }
+
+        .card-rating {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            color: var(--color-star);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .card-downloads {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Thanh tiến trình độ tin cậy / độ hữu ích của tài liệu */
+        .progress-box {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .progress-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.6875rem;
+            color: var(--color-text-muted);
+        }
+
+        .progress-bar-track {
+            width: 100%;
+            height: 5px;
+            background-color: var(--color-background);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+            border-radius: var(--radius-full);
+            animation: fillProgressBar 1.2s var(--ease-smooth) forwards;
+        }
+
+        /* Chân thẻ (Card Footer): Nhóm nút tương tác chính */
+        .card-actions {
+            display: flex;
+            gap: var(--space-xs);
+            padding-top: var(--space-xs);
+        }
+
+        /* Nút xem trước Modal thuần CSS (Trigger qua Label) */
+        .btn-card-preview {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text);
+            background-color: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-card-preview:hover {
+            background-color: #E2E8F0;
+            border-color: #CBD5E1;
+            color: var(--color-primary);
+        }
+
+        /* Nút tải về ngay với hiệu ứng nhấc nút & đổi màu */
+        .btn-card-download {
+            flex: 1.3;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-white);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            border-radius: var(--radius-md);
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .btn-card-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
+            filter: brightness(1.08);
+        }
+
+        .btn-card-download:active {
+            transform: scale(0.97); /* Hiệu ứng lún nút khi nhấn chuột */
+        }
+
+        /* ====================================================================
+           11. CƠ CHẾ BỘ LỌC ĐA NĂNG THUẦN CSS (KHÔNG DÙNG 1 DÒNG JAVASCRIPT)
+           Áp dụng bộ chọn :has() để ẩn/hiện các thẻ tài liệu tương ứng
+           ==================================================================== */
+
+        /* 11.1 Lọc theo Chuyên mục (Category Filters) */
+        body:has(#cat-web:checked) .doc-card:not([data-cat="web"]),
+        body:has(#cat-os:checked) .doc-card:not([data-cat="os"]),
+        body:has(#cat-design:checked) .doc-card:not([data-cat="design"]),
+        body:has(#cat-ai:checked) .doc-card:not([data-cat="ai"]),
+        body:has(#cat-exam:checked) .doc-card:not([data-cat="exam"]) {
+            display: none !important;
+        }
+
+        /* 11.2 Lọc theo Định dạng tệp (Format Filters) */
+        body:has(#fmt-pdf:checked) .doc-card:not([data-fmt="pdf"]),
+        body:has(#fmt-docx:checked) .doc-card:not([data-fmt="docx"]),
+        body:has(#fmt-pptx:checked) .doc-card:not([data-fmt="pptx"]),
+        body:has(#fmt-zip:checked) .doc-card:not([data-fmt="zip"]) {
+            display: none !important;
+        }
+
+        /* ====================================================================
+           12. CHẾ ĐỘ XEM DANH SÁCH (LIST VIEW MODE) THUẦN CSS
+           Khi radio #view-list được chọn -> Grid chuyển thành dạng Flex 1 hàng
+           ==================================================================== */
+        body:has(#view-list:checked) .docs-grid {
+            grid-template-columns: 1fr; /* Trở về 1 cột dài xếp chồng */
+            gap: var(--space-md);
+        }
+
+        body:has(#view-list:checked) .doc-card {
+            flex-direction: row;        /* Dàn ngang các phần tử con */
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-md) var(--space-lg);
+        }
+
+        body:has(#view-list:checked) .card-top {
+            flex: 0 0 auto;
+        }
+
+        body:has(#view-list:checked) .card-body {
+            flex: 1 1 auto;
+            padding-inline: var(--space-md);
+        }
+
+        body:has(#view-list:checked) .card-meta-row {
+            display: none;              /* Ẩn bớt chi tiết phụ ở chế độ danh sách gọn */
+        }
+
+        body:has(#view-list:checked) .progress-box {
+            display: none;
+        }
+
+        body:has(#view-list:checked) .card-actions {
+            flex: 0 0 220px;
+            padding-top: 0;
+        }
+
+        /* ====================================================================
+           13. MODAL XEM TRƯỚC TÀI LIỆU (PREVIEW MODAL) 100% THUẦN CSS
+           Kỹ thuật: Checkbox Hack & :checked kết hợp CSS Transform & Opacity
+           ==================================================================== */
+        .modal-toggle-input {
+            display: none; /* Ẩn checkbox kích hoạt modal */
+        }
+
+        /* Lớp phủ màn hình mờ nền đen (Overlay) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(4px); /* Làm nhòe nền tăng tính thẩm mỹ cao cấp */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-md);
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition:
+                opacity var(--transition-normal),
+                visibility var(--transition-normal);
+        }
+
+        /* Hộp thoại nội dung Modal (Modal Box) */
+        .modal-box {
+            background-color: var(--color-surface);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 620px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--color-border);
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.92) translateY(20px);
+            transition: transform 0.35s var(--ease-bounce);
+        }
+
+        /* Khi bất kỳ modal toggle nào được CHECKED -> Bật Modal lên ngay lập tức */
+        body:has(.modal-toggle-input:checked) .modal-overlay {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        body:has(.modal-toggle-input:checked) .modal-box {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--color-border);
+            background-color: var(--color-background);
+        }
+
+        .modal-header h3 {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text);
+        }
+
+        /* Nút đóng modal dạng chữ X */
+        .modal-close-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-full);
+            background-color: #E2E8F0;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            font-size: 1.25rem;
+            line-height: 1;
+            transition: all var(--transition-fast);
+        }
+
+        .modal-close-btn:hover {
+            background-color: var(--color-pdf);
+            color: var(--color-white);
+            transform: rotate(90deg); /* Xoay 90 độ khi hover tạo phản hồi thú vị */
+        }
+
+        .modal-body {
+            padding: var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            font-size: var(--font-size-sm);
+            line-height: var(--line-height-relaxed);
+            color: var(--color-text);
+        }
+
+        .modal-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-sm);
+            background-color: var(--color-background);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+        }
+
+        .modal-meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-meta-label {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-muted);
+        }
+
+        .modal-meta-val {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-lg);
+            border-top: 1px solid var(--color-border);
+            background-color: var(--color-background);
+        }
+
+        /* ====================================================================
+           14. NÚT NỔI TƯƠNG TÁC FAB (FLOATING ACTION BUTTON) - BÀI TẬP TUẦN 5
+           Cố định góc dưới phải, hiệu ứng Pulse thu hút hành vi người dùng
+           ==================================================================== */
+        .fab-upload {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            color: var(--color-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+            cursor: pointer;
+            z-index: 90;
+            text-decoration: none;
+            will-change: transform;
+            animation: pulseGlow 2.5s infinite; /* Hiệu ứng co giãn nhấp nháy liên tục */
+            transition: transform var(--transition-fast), filter var(--transition-fast);
+        }
+
+        .fab-upload:hover {
+            transform: scale(1.12) rotate(8deg);
+            filter: brightness(1.15);
+        }
+
+        /* Chú thích hiển thị dạng Tooltip khi hover FAB */
+        .fab-tooltip {
+            position: absolute;
+            right: 68px;
+            background-color: var(--color-header-bg);
+            color: var(--color-white);
+            padding: 6px 12px;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-xs);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(10px);
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow-md);
+        }
+
+        .fab-upload:hover .fab-tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ====================================================================
+           15. RESPONSIVE BREAKPOINTS (MEDIA QUERIES) - KIẾN THỨC TUẦN 4
+           Mobile (< 600px) -> Tablet (600px - 1024px) -> Desktop (> 1024px)
+           ==================================================================== */
+
+        /* Trên màn hình nhỏ di động (< 600px) */
+        @media (max-width: 599px) {
+            .repo-hero {
+                padding: var(--space-lg) var(--space-md);
+            }
+            .hero-title {
+                font-size: var(--font-size-xl);
+            }
+            .repo-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .toolbar-left {
+                width: 100%;
+            }
+            .search-box-wrapper {
+                max-width: 100%;
+            }
+            .view-mode-group {
+                justify-content: center;
+            }
+            /* Chuyển các nút hành động trong card thành dạng dọc nếu màn hình quá hẹp */
+            .card-actions {
+                flex-direction: column;
+            }
+            .btn-card-preview, .btn-card-download {
+                width: 100%;
+            }
+            /* Điều chỉnh modal vừa khít màn hình điện thoại */
+            .modal-meta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Trên màn hình Tablet (600px - 1023px) */
+        @media (min-width: 600px) and (max-width: 1023px) {
+            .repo-layout {
+                grid-template-columns: 1fr;
+            }
+            .filter-pills {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: var(--space-xs);
+            }
+        }
+
+        /* ====================================================================
+           HIỆU ỨNG PARALLAX BACKGROUND (BÀI TẬP 4 TUẦN 5) - CHIỀU SÂU KHÔNG GIAN
+           Sử dụng background-attachment: fixed để ảnh nền cuộn chậm hơn chữ
+           ==================================================================== */
+        .parallax-cta-section {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.92)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><rect width="80" height="80" fill="%231e293b"/><circle cx="40" cy="40" r="30" stroke="%23334155" stroke-width="1.5" fill="none"/></svg>');
+            background-attachment: fixed; /* Khóa ảnh nền cố định khi cuộn trang */
+            background-position: center;
+            background-size: cover;
+            border-radius: var(--radius-lg);
+            padding: var(--space-2xl) var(--space-lg);
+            margin-top: var(--space-2xl);
+            color: var(--color-white);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-md);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Skip link: Accessibility -->
+    <!-- Skip link: Hỗ trợ người dùng khiếm thị / dùng phím Tab chuyển nhanh đến nội dung chính -->
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
 
-    <!-- =========================================================
-         HEADER WRAPPER
-         Chứa header (brand) + input checkbox + label hamburger + nav
-         Cấu trúc này bắt buộc để CSS-only hamburger hoạt động:
-         .nav-toggle (checkbox) phải là anh em (sibling) của nav
-    ========================================================== -->
-    <div class="header-wrapper">
+    <!-- ======================================================================
+         CÁC INPUT RADIO ĐIỀU KHIỂN BỘ LỌC ĐA NĂNG THUẦN CSS (ZERO JAVASCRIPT)
+         Đặt ở mức toàn cục để mọi thẻ con đều có thể truy cập qua :has()
+         ====================================================================== -->
+    <!-- Nhóm 1: Bộ lọc Chuyên mục (Category Filter) -->
+    <input type="radio" id="cat-all" name="category-filter" class="filter-controller" checked>
+    <input type="radio" id="cat-web" name="category-filter" class="filter-controller">
+    <input type="radio" id="cat-os" name="category-filter" class="filter-controller">
+    <input type="radio" id="cat-design" name="category-filter" class="filter-controller">
+    <input type="radio" id="cat-ai" name="category-filter" class="filter-controller">
+    <input type="radio" id="cat-exam" name="category-filter" class="filter-controller">
 
+    <!-- Nhóm 2: Bộ lọc Định dạng tệp (Format Filter) -->
+    <input type="radio" id="fmt-all" name="format-filter" class="filter-controller" checked>
+    <input type="radio" id="fmt-pdf" name="format-filter" class="filter-controller">
+    <input type="radio" id="fmt-docx" name="format-filter" class="filter-controller">
+    <input type="radio" id="fmt-pptx" name="format-filter" class="filter-controller">
+    <input type="radio" id="fmt-zip" name="format-filter" class="filter-controller">
+
+    <!-- Nhóm 3: Chế độ hiển thị Lưới hoặc Danh sách (View Mode Switcher) -->
+    <input type="radio" id="view-grid" name="view-mode" class="filter-controller" checked>
+    <input type="radio" id="view-list" name="view-mode" class="filter-controller">
+
+    <!-- Checkbox điều khiển bật/tắt Modal xem trước nhanh (CSS-only Modal) -->
+    <input type="checkbox" id="modal-preview-toggle" class="modal-toggle-input">
+
+    <!-- ======================================================================
+         HEADER WRAPPER (KẾ THỪA TỪ HỆ THỐNG DỰ ÁN NHÓM)
+         Chứa brand + menu điều hướng CSS-only Hamburger Menu
+         ====================================================================== -->
+    <div class="header-wrapper">
         <header>
             <div class="container header-inner">
 
-                <!-- Brand / Logo -->
+                <!-- Logo và Slogan thương hiệu -->
                 <a class="brand" href="trangchu.html" aria-label="MyVault — Trang chủ">
                     <span class="brand-name">My<span>Vault</span></span>
                     <span class="brand-tagline">Personal Document &amp; Knowledge Hub</span>
                 </a>
 
-                <!-- Checkbox cho CSS-only hamburger (phải là sibling của nav) -->
+                <!-- Checkbox cho CSS-only hamburger (phải là anh em sibling của nav) -->
                 <input
                     type="checkbox"
                     id="nav-toggle"
                     class="nav-toggle"
                     aria-hidden="true"
                 >
-                <!-- Label hamburger — chỉ hiển thị trên mobile -->
+                <!-- Label hamburger - Hiển thị trên mobile biến thành dấu X mượt mà (Tuần 5) -->
                 <label
                     for="nav-toggle"
                     class="nav-toggle-label"
@@ -50,10 +1305,7 @@
             </div><!-- /.container.header-inner -->
         </header>
 
-        <!-- =====================================================
-             NAV — phải là sibling của .nav-toggle để CSS hack hoạt động
-             Selector: .nav-toggle:checked ~ nav .nav-menu
-        ====================================================== -->
+        <!-- Thanh điều hướng chính (Nav) -->
         <nav aria-label="Điều hướng chính">
             <div class="container">
                 <div class="nav-menu">
@@ -68,42 +1320,834 @@
                                 Kho tài liệu
                             </a>
                         </li>
-                        <!-- Thành viên có thể thêm mục menu tại đây -->
                     </ul>
                 </div><!-- /.nav-menu -->
             </div><!-- /.container -->
         </nav>
-
     </div><!-- /.header-wrapper -->
 
 
-    <!-- =========================================================
-         MAIN CONTENT
-         ✏️  KHU VỰC ĐỂ TRỐNG — THÀNH VIÊN PHỤ TRÁCH TRANG NÀY
-             hãy xây dựng nội dung bên trong thẻ <main> này.
-         ⚠️  Không chỉnh sửa: header, nav, footer, style.css
-    ========================================================== -->
+    <!-- ======================================================================
+         MAIN CONTENT: KHU VỰC KHO TÀI LIỆU CHÍNH
+         Áp dụng cấu trúc Semantic HTML5: <main>, <section>, <aside>, <article>
+         ====================================================================== -->
     <main id="main-content">
         <div class="container">
 
-            <!-- ================================================
-                 VÙNG NỘI DUNG KHO TÀI LIỆU
-                 Thành viên 2 thêm nội dung tại đây
-            ================================================= -->
+            <!-- ==============================================================
+                 PHẦN 1: HERO BANNER - TỔNG QUAN KHO TÀI LIỆU
+                 Áp dụng Flexbox, Box Model, Gradient và Animations (Tuần 3 & 5)
+                 ============================================================== -->
+            <section class="repo-hero" aria-labelledby="repo-heading">
+                <div class="repo-hero-content">
+                    
+                    <!-- Huy hiệu động (Pulse Badge) -->
+                    <div class="hero-badge" aria-hidden="true">
+                        <span>⚡</span>
+                        <span>Cập nhật Tuần mới: 12 tài liệu được bổ sung</span>
+                    </div>
 
-            <div class="main-placeholder" role="region" aria-label="Khu vực nội dung kho tài liệu">
-                <div class="placeholder-icon" aria-hidden="true">🗂️</div>
-                <p>Nội dung Kho tài liệu</p>
-                <small>Thành viên phụ trách: hãy xây dựng nội dung bên trong &lt;main&gt; tại đây</small>
-            </div>
+                    <!-- Tiêu đề lớn của Kho tài liệu -->
+                    <h1 id="repo-heading" class="hero-title">
+                        Kho Tài Liệu <span>Học Tập &amp; Nghiên Cứu</span> MyVault
+                    </h1>
+
+                    <!-- Hiệu ứng máy đánh chữ (Typing Effect - Bài tập 3 Tuần 5) -->
+                    <div class="typing-wrapper" aria-hidden="true">
+                        <span class="typing-line">✨ Hệ thống số hóa tài liệu học tập &amp; mã nguồn chuẩn SEO 2026...</span>
+                    </div>
+
+                    <!-- Đoạn mô tả ngữ cảnh -->
+                    <p class="hero-desc">
+                        Không gian số lưu trữ toàn diện các giáo trình chuẩn, đồ án mẫu, đề thi và mã nguồn thực hành.
+                        Được thiết kế với bộ lọc đa năng thuần CSS mượt mà, tốc độ tải siêu tốc và khả năng phản hồi trên mọi thiết bị.
+                    </p>
+
+                    <!-- Thanh thống kê chỉ số nhanh (Hero Stats Bar) bằng Flexbox -->
+                    <div class="hero-stats-bar" role="region" aria-label="Thống kê kho tài liệu">
+                        <div class="stat-item">
+                            <span class="stat-number">128+</span>
+                            <span class="stat-label">Tổng tài liệu</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">14.8 GB</span>
+                            <span class="stat-label">Dung lượng số</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">4.9k</span>
+                            <span class="stat-label">Lượt tải về</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Không dùng JS</span>
+                        </div>
+                    </div>
+
+                </div><!-- /.repo-hero-content -->
+            </section><!-- /.repo-hero -->
+
+
+            <!-- ==============================================================
+                 PHẦN 2: BỐ CỤC TỔNG THỂ KHO TÀI LIỆU (CSS GRID 2 CỘT)
+                 Gồm Cột Trái (Bộ lọc đa năng) và Cột Phải (Danh sách tài liệu)
+                 ============================================================== -->
+            <div class="repo-layout">
+
+                <!-- ----------------------------------------------------------
+                     CỘT TRÁI: THANH ĐIỀU KHIỂN & BỘ LỌC ĐA NĂNG (<aside>)
+                     Gồm 3 tầng lọc: Lọc Chuyên mục, Lọc Định dạng, và Reset
+                     ---------------------------------------------------------- -->
+                <aside class="filter-panel" aria-label="Bộ lọc tài liệu đa năng">
+
+                    <!-- Tiêu đề bộ lọc và nút Hoàn tác về Tất cả -->
+                    <div class="filter-header">
+                        <span class="filter-header-title">
+                            <span>🎯</span> Bộ lọc tài liệu
+                        </span>
+                        <!-- Click label này sẽ kích hoạt radio #cat-all và #fmt-all để hoàn tác bộ lọc -->
+                        <label for="cat-all" class="btn-reset-filters" title="Xem tất cả tài liệu">
+                            Đặt lại
+                        </label>
+                    </div>
+
+                    <!-- NHÓM LỌC 1: THEO CHỦ ĐỀ CHUYÊN MÔN -->
+                    <div class="filter-group">
+                        <span class="filter-group-title">Chuyên mục</span>
+                        <div class="filter-pills" role="radiogroup" aria-label="Chọn chuyên mục">
+                            
+                            <!-- Mục Tất cả -->
+                            <label for="cat-all" class="filter-pill-label">
+                                <span>📁 Tất cả danh mục</span>
+                                <span class="pill-count">8</span>
+                            </label>
+
+                            <!-- Mục Lập trình Web -->
+                            <label for="cat-web" class="filter-pill-label">
+                                <span>🌐 Thiết kế Web &amp; UI</span>
+                                <span class="pill-count">3</span>
+                            </label>
+
+                            <!-- Mục Hệ điều hành & Mạng -->
+                            <label for="cat-os" class="filter-pill-label">
+                                <span>🖥️ Hệ điều hành &amp; Mạng</span>
+                                <span class="pill-count">2</span>
+                            </label>
+
+                            <!-- Mục Đồ họa & UX -->
+                            <label for="cat-design" class="filter-pill-label">
+                                <span>🎨 UI/UX &amp; Design System</span>
+                                <span class="pill-count">1</span>
+                            </label>
+
+                            <!-- Mục Trí tuệ nhân tạo -->
+                            <label for="cat-ai" class="filter-pill-label">
+                                <span>🤖 Trí tuệ nhân tạo (AI)</span>
+                                <span class="pill-count">1</span>
+                            </label>
+
+                            <!-- Mục Đề thi & Ôn tập -->
+                            <label for="cat-exam" class="filter-pill-label">
+                                <span>📝 Đề thi &amp; Đáp án mẫu</span>
+                                <span class="pill-count">1</span>
+                            </label>
+
+                        </div><!-- /.filter-pills -->
+                    </div><!-- /.filter-group -->
+
+                    <!-- NHÓM LỌC 2: THEO ĐỊNH DẠNG FILE -->
+                    <div class="filter-group">
+                        <span class="filter-group-title">Định dạng tệp</span>
+                        <div class="format-tags" role="radiogroup" aria-label="Chọn định dạng file">
+                            <label for="fmt-all" class="format-tag-label">
+                                <span>Mọi tệp</span>
+                            </label>
+                            <label for="fmt-pdf" class="format-tag-label">
+                                <span style="color: var(--color-pdf);">●</span> PDF
+                            </label>
+                            <label for="fmt-docx" class="format-tag-label">
+                                <span style="color: var(--color-docx);">●</span> DOCX
+                            </label>
+                            <label for="fmt-pptx" class="format-tag-label">
+                                <span style="color: var(--color-pptx);">●</span> PPTX
+                            </label>
+                            <label for="fmt-zip" class="format-tag-label">
+                                <span style="color: var(--color-zip);">●</span> ZIP Code
+                            </label>
+                        </div><!-- /.format-tags -->
+                    </div><!-- /.filter-group -->
+
+                    <!-- NHÓM LỌC 3: HƯỚNG DẪN TƯƠNG TÁC NGƯỜI DÙNG -->
+                    <div class="filter-group" style="border-top: 1px solid var(--color-border); padding-top: var(--space-sm);">
+                        <span class="filter-group-title">Thông tin trợ giúp</span>
+                        <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); line-height: 1.4;">
+                            💡 <em>Hệ thống hoạt động với bộ lọc thuần CSS `:has()` hiện đại, phản hồi tức thì với tốc độ 60fps không giật lag.</em>
+                        </p>
+                    </div>
+
+                </aside><!-- /.filter-panel -->
+
+
+                <!-- ----------------------------------------------------------
+                     CỘT PHẢI: VÙNG NỘI DUNG TÀI LIỆU CHÍNH (<section>)
+                     Gồm Toolbar trên cùng và CSS Grid hiển thị toàn bộ tài liệu
+                     ---------------------------------------------------------- -->
+                <section class="content-area" aria-label="Danh sách tài liệu khả dụng">
+
+                    <!-- THANH CÔNG CỤ ĐIỀU HƯỚNG & HIỂN THỊ TRÊN CÙNG (TOOLBAR) -->
+                    <div class="repo-toolbar">
+                        
+                        <!-- Ô tìm kiếm giao diện chuẩn UI/UX -->
+                        <div class="toolbar-left">
+                            <div class="search-box-wrapper">
+                                <span class="search-icon-symbol" aria-hidden="true">🔍</span>
+                                <input
+                                    type="search"
+                                    class="search-box-input"
+                                    placeholder="Tìm tài liệu, giáo trình, mã nguồn..."
+                                    aria-label="Tìm kiếm trong kho tài liệu"
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Bộ chuyển đổi chế độ xem Lưới (Grid) vs Danh sách (List) -->
+                        <div class="view-mode-group" role="radiogroup" aria-label="Chế độ hiển thị">
+                            <label for="view-grid" class="view-mode-btn" title="Hiển thị dạng thẻ lưới">
+                                <span>🔲</span> Lưới thẻ
+                            </label>
+                            <label for="view-list" class="view-mode-btn" title="Hiển thị dạng danh sách">
+                                <span>☰</span> Danh sách
+                            </label>
+                        </div>
+
+                    </div><!-- /.repo-toolbar -->
+
+                    <!-- ======================================================
+                         THẺ ĐỀ CỬ TIÊU BIỂU: HIỆU ỨNG 3D CARD FLIP (BÀI TẬP 2 TUẦN 5)
+                         Kỹ thuật CSS 3D Transforms: perspective + preserve-3d + backface-visibility
+                         Không sử dụng một dòng JavaScript nào!
+                         ====================================================== -->
+                    <div class="featured-flip-card-wrapper" role="region" aria-label="Tài liệu tiêu biểu đề cử trong tháng">
+                        <div class="flip-card-inner">
+                            
+                            <!-- Mặt trước của thẻ (Front Face) -->
+                            <div class="flip-card-front">
+                                <div style="display: flex; align-items: center; gap: var(--space-md);">
+                                    <div class="file-icon-box icon-pdf" style="width: 58px; height: 58px; font-size: 2rem;">
+                                        🏆
+                                    </div>
+                                    <div>
+                                        <span style="font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.05em;">
+                                            ⭐ TÀI LIỆU TIÊU BIỂU ĐƯỢC ĐỀ CỬ #1 (BÀI TẬP LẬT THẺ 3D TUẦN 5)
+                                        </span>
+                                        <h3 style="font-size: var(--font-size-md); font-weight: var(--font-weight-bold); color: var(--color-text); margin-top: 2px;">
+                                            Cẩm Nang Toàn Diện: CSS Grid, Flexbox &amp; Micro-interactions 2026
+                                        </h3>
+                                        <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: 2px;">
+                                            Biên soạn: Phạm Đăng Khoa &amp; Nguyễn Đăng Nhật • Đánh giá: 5.0 ⭐ (4,500 lượt tải)
+                                        </p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0;">
+                                    <span style="font-size: var(--font-size-xs); background: #DBEAFE; color: #1D4ED8; padding: 4px 10px; border-radius: var(--radius-full); font-weight: 600;">
+                                        🔄 Rê chuột để LẬT 180°
+                                    </span>
+                                    <small style="font-size: 0.6875rem; color: var(--color-text-muted);">Hiệu ứng 3D CSS thuần</small>
+                                </div>
+                            </div>
+
+                            <!-- Mặt sau của thẻ (Back Face - Xoay 180 độ) -->
+                            <div class="flip-card-back">
+                                <div>
+                                    <span style="font-size: var(--font-size-xs); color: var(--color-active); font-weight: var(--font-weight-bold); text-transform: uppercase;">
+                                        📖 TÓM TẮT NỘI DUNG GIÁO TRÌNH TIÊU BIỂU
+                                    </span>
+                                    <p style="font-size: var(--font-size-xs); color: #CBD5E1; margin-top: 4px; line-height: 1.5; max-width: 540px;">
+                                        Gồm 5 chương thực chiến: Box Model &amp; Flex/Grid (Tuần 3), Design System &amp; Mobile-First (Tuần 4), Animations GPU &amp; CSS-only Filter (Tuần 5). Đạt 100/100 điểm hiệu năng Lighthouse.
+                                    </p>
+                                </div>
+                                <div style="display: flex; gap: var(--space-xs); align-items: center; flex-shrink: 0;">
+                                    <label for="modal-preview-toggle" class="btn-card-preview" style="background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.3);">
+                                        Xem mục lục
+                                    </label>
+                                    <a href="#download-master" class="btn-card-download" style="background: var(--color-primary); color: #fff;">
+                                        <span>Tải 24.5 MB</span>
+                                        <span>↓</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div><!-- /.flip-card-inner -->
+                    </div><!-- /.featured-flip-card-wrapper -->
+
+
+                    <!-- ======================================================
+                         LƯỚI HIỂN THỊ TÀI LIỆU CHÍNH (DOCUMENTS GRID)
+                         Mỗi tài liệu là một thẻ <article> chuẩn ngữ nghĩa Semantic HTML5
+                         Gắn kèm thuộc tính data-cat và data-fmt để CSS lọc chuẩn xác
+                         ====================================================== -->
+                    <div class="docs-grid" role="feed" aria-busy="false">
+
+                        <!-- ==================================================
+                             TÀI LIỆU 1: GIÁO TRÌNH THIẾT KẾ WEB (PDF)
+                             Thuộc tính: Chuyên mục Web (data-cat="web"), Định dạng PDF (data-fmt="pdf")
+                             ================================================== -->
+                        <article class="doc-card" data-cat="web" data-fmt="pdf">
+                            <div class="card-top">
+                                <div class="file-icon-box icon-pdf" aria-hidden="true">
+                                    📄
+                                </div>
+                                <div class="card-badges">
+                                    <span class="badge-tag badge-hot">HOT</span>
+                                    <span class="badge-size">14.2 MB</span>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <span class="card-category-name">Thiết kế Web &amp; UI</span>
+                                <h2 class="card-title">Giáo Trình CSS Layout &amp; Design System Toàn Diện</h2>
+                                <p class="card-excerpt">
+                                    Tập hợp chi tiết về Flexbox 1D, CSS Grid 2D, kiến trúc Mobile-First, biến CSS Variables và tối ưu hóa hiệu năng chuyển động GPU.
+                                </p>
+                            </div>
+
+                            <div class="card-meta-row">
+                                <div class="card-rating" aria-label="Đánh giá 5 sao">
+                                    <span>⭐⭐⭐⭐⭐</span>
+                                    <span>5.0</span>
+                                </div>
+                                <div class="card-downloads">
+                                    <span>📥</span>
+                                    <span>1,420 tải</span>
+                                </div>
+                            </div>
+
+                            <!-- Thanh tiến trình độ hoàn thiện tài liệu -->
+                            <div class="progress-box">
+                                <div class="progress-label-row">
+                                    <span>Độ tin cậy</span>
+                                    <span>98%</span>
+                                </div>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill" style="--target-width: 98%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="card-actions">
+                                <label for="modal-preview-toggle" class="btn-card-preview">
+                                    Xem trước
+                                </label>
+                                <a href="#download-doc1" class="btn-card-download" download>
+                                    <span>Tải về</span>
+                                    <span aria-hidden="true">↓</span>
+                                </a>
+                            </div>
+                        </article>
+
+
+                        <!-- ==================================================
+                             TÀI LIỆU 2: ĐỒ ÁN HỆ THỐNG MẠNG & HĐH (DOCX)
+                             Thuộc tính: data-cat="os", data-fmt="docx"
+                             ================================================== -->
+                        <article class="doc-card" data-cat="os" data-fmt="docx">
+                            <div class="card-top">
+                                <div class="file-icon-box icon-docx" aria-hidden="true">
+                                    📝
+                                </div>
+                                <div class="card-badges">
+                                    <span class="badge-tag badge-new">MỚI</span>
+                                    <span class="badge-size">4.8 MB</span>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <span class="card-category-name">Hệ điều hành &amp; Mạng</span>
+                                <h2 class="card-title">Báo Cáo Đồ Án Quản Trị Hệ Điều Hành Linux &amp; Cloud</h2>
+                                <p class="card-excerpt">
+                                    Quy trình triển khai Server, cấu hình phân quyền người dùng, bảo mật tường lửa UFW và tối ưu hiệu suất tài nguyên nhân Kernel.
+                                </p>
+                            </div>
+
+                            <div class="card-meta-row">
+                                <div class="card-rating" aria-label="Đánh giá 4.8 sao">
+                                    <span>⭐⭐⭐⭐☆</span>
+                                    <span>4.8</span>
+                                </div>
+                                <div class="card-downloads">
+                                    <span>📥</span>
+                                    <span>860 tải</span>
+                                </div>
+                            </div>
+
+                            <div class="progress-box">
+                                <div class="progress-label-row">
+                                    <span>Độ tin cậy</span>
+                                    <span>92%</span>
+                                </div>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill" style="--target-width: 92%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="card-actions">
+                                <label for="modal-preview-toggle" class="btn-card-preview">
+                                    Xem trước
+                                </label>
+                                <a href="#download-doc2" class="btn-card-download" download>
+                                    <span>Tải về</span>
+                                    <span aria-hidden="true">↓</span>
+                                </a>
+                            </div>
+                        </article>
+
+
+                        <!-- ==================================================
+                             TÀI LIỆU 3: SLIDE BÀI GIẢNG UI/UX SYSTEM (PPTX)
+                             Thuộc tính: data-cat="design", data-fmt="pptx"
+                             ================================================== -->
+                        <article class="doc-card" data-cat="design" data-fmt="pptx">
+                            <div class="card-top">
+                                <div class="file-icon-box icon-pptx" aria-hidden="true">
+                                    📊
+                                </div>
+                                <div class="card-badges">
+                                    <span class="badge-tag badge-hot">HOT</span>
+                                    <span class="badge-size">28.5 MB</span>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <span class="card-category-name">UI/UX &amp; Design System</span>
+                                <h2 class="card-title">Slide Thuyết Trình Tư Duy Mobile-First &amp; Micro-UX</h2>
+                                <p class="card-excerpt">
+                                    Bộ slide trực quan gồm 45 trang phân tích tâm lý người dùng khi tương tác trên thiết bị di động, hiệu ứng chuyển cảnh mượt và font scale.
+                                </p>
+                            </div>
+
+                            <div class="card-meta-row">
+                                <div class="card-rating" aria-label="Đánh giá 4.9 sao">
+                                    <span>⭐⭐⭐⭐⭐</span>
+                                    <span>4.9</span>
+                                </div>
+                                <div class="card-downloads">
+                                    <span>📥</span>
+                                    <span>2,100 tải</span>
+                                </div>
+                            </div>
+
+                            <div class="progress-box">
+                                <div class="progress-label-row">
+                                    <span>Độ tin cậy</span>
+                                    <span>96%</span>
+                                </div>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill" style="--target-width: 96%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="card-actions">
+                                <label for="modal-preview-toggle" class="btn-card-preview">
+                                    Xem trước
+                                </label>
+                                <a href="#download-doc3" class="btn-card-download" download>
+                                    <span>Tải về</span>
+                                    <span aria-hidden="true">↓</span>
+                                </a>
+                            </div>
+                        </article>
+
+
+                        <!-- ==================================================
+                             TÀI LIỆU 4: MÃ NGUỒN DỰ ÁN MYVAULT (ZIP)
+                             Thuộc tính: data-cat="web", data-fmt="zip"
+                             ================================================== -->
+                        <article class="doc-card" data-cat="web" data-fmt="zip">
+                            <div class="card-top">
+                                <div class="file-icon-box icon-zip" aria-hidden="true">
+                                    📦
+                                </div>
+                                <div class="card-badges">
+                                    <span class="badge-tag badge-new">CODE</span>
+                                    <span class="badge-size">6.2 MB</span>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <span class="card-category-name">Thiết kế Web &amp; UI</span>
+                                <h2 class="card-title">Full Source Code Kho Tài Liệu Số Thuần HTML &amp; CSS</h2>
+                                <p class="card-excerpt">
+                                    Mã nguồn hoàn chỉnh đạt điểm tối đa: Không sử dụng bất kỳ dòng JavaScript nào, tích hợp CSS-only Filter, Responsive và Animations.
+                                </p>
+                            </div>
+
+                            <div class="card-meta-row">
+                                <div class="card-rating" aria-label="Đánh giá 5.0 sao">
+                                    <span>⭐⭐⭐⭐⭐</span>
+                                    <span>5.0</span>
+                                </div>
+                                <div class="card-downloads">
+                                    <span>📥</span>
+                                    <span>3,500 tải</span>
+                                </div>
+                            </div>
+
+                            <div class="progress-box">
+                                <div class="progress-label-row">
+                                    <span>Độ tin cậy</span>
+                                    <span>100%</span>
+                                </div>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill" style="--target-width: 100%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="card-actions">
+                                <label for="modal-preview-toggle" class="btn-card-preview">
+                                    Xem trước
+                                </label>
+                                <a href="#download-doc4" class="btn-card-download" download>
+                                    <span>Tải về</span>
+                                    <span aria-hidden="true">↓</span>
+                                </a>
+                            </div>
+                        </article>
+
+
+                        <!-- ==================================================
+                             TÀI LIỆU 5: NGHIÊN CỨU AI & MACHINE LEARNING (PDF)
+                             Thuộc tính: data-cat="ai", data-fmt="pdf"
+                             ================================================== -->
+                        <article class="doc-card" data-cat="ai" data-fmt="pdf">
+                            <div class="card-top">
+                                <div class="file-icon-box icon-pdf" aria-hidden="true">
+                                    🤖
+                                </div>
+                                <div class="card-badges">
+                                    <span class="badge-tag badge-new">AI 2026</span>
+                                    <span class="badge-size">18.4 MB</span>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <span class="card-category-name">Trí tuệ nhân tạo (AI)</span>
+                                <h2 class="card-title">Nghiên Cứu Ứng Dụng Vibe Coding &amp; Generative Agent</h2>
+                                <p class="card-excerpt">
+                                    Tổng hợp xu hướng lập trình tương lai với Google Antigravity, xây dựng quy trình tự động hóa giao diện từ ý tưởng đến mã nguồn chuẩn mực.
+                                </p>
+                            </div>
+
+                            <div class="card-meta-row">
+                                <div class="card-rating" aria-label="Đánh giá 4.9 sao">
+                                    <span>⭐⭐⭐⭐⭐</span>
+                                    <span>4.9</span>
+                                </div>
+                                <div class="card-downloads">
+                                    <span>📥</span>
+                                    <span>1,950 tải</span>
+                                </div>
+                            </div>
+
+                            <div class="progress-box">
+                                <div class="progress-label-row">
+                                    <span>Độ tin cậy</span>
+                                    <span>95%</span>
+                                </div>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill" style="--target-width: 95%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="card-actions">
+                                <label for="modal-preview-toggle" class="btn-card-preview">
+                                    Xem trước
+                                </label>
+                                <a href="#download-doc5" class="btn-card-download" download>
+                                    <span>Tải về</span>
+                                    <span aria-hidden="true">↓</span>
+                                </a>
+                            </div>
+                        </article>
+
+
+                        <!-- ==================================================
+                             TÀI LIỆU 6: ĐỀ THI & HƯỚNG DẪN GIẢI CHI TIẾT (DOCX)
+                             Thuộc tính: data-cat="exam", data-fmt="docx"
+                             ================================================== -->
+                        <article class="doc-card" data-cat="exam" data-fmt="docx">
+                            <div class="card-top">
+                                <div class="file-icon-box icon-docx" aria-hidden="true">
+                                    📋
+                                </div>
+                                <div class="card-badges">
+                                    <span class="badge-tag badge-hot">ÔN TẬP</span>
+                                    <span class="badge-size">3.2 MB</span>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <span class="card-category-name">Đề thi &amp; Đáp án mẫu</span>
+                                <h2 class="card-title">Bộ Đề Thi Thực Hành Thiết Kế Web Kèm Lời Giải Chuẩn</h2>
+                                <p class="card-excerpt">
+                                    10 đề thi mẫu bao quát kiến thức Holy Grail Layout, Pricing Table, Adaptive Cards, và kỹ thuật Refactor loại bỏ mã CSS rác.
+                                </p>
+                            </div>
+
+                            <div class="card-meta-row">
+                                <div class="card-rating" aria-label="Đánh giá 5.0 sao">
+                                    <span>⭐⭐⭐⭐⭐</span>
+                                    <span>5.0</span>
+                                </div>
+                                <div class="card-downloads">
+                                    <span>📥</span>
+                                    <span>2,800 tải</span>
+                                </div>
+                            </div>
+
+                            <div class="progress-box">
+                                <div class="progress-label-row">
+                                    <span>Độ tin cậy</span>
+                                    <span>99%</span>
+                                </div>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill" style="--target-width: 99%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="card-actions">
+                                <label for="modal-preview-toggle" class="btn-card-preview">
+                                    Xem trước
+                                </label>
+                                <a href="#download-doc6" class="btn-card-download" download>
+                                    <span>Tải về</span>
+                                    <span aria-hidden="true">↓</span>
+                                </a>
+                            </div>
+                        </article>
+
+
+                        <!-- ==================================================
+                             TÀI LIỆU 7: KIẾN TRÚC MẠNG MÁY TÍNH NÂNG CAO (PPTX)
+                             Thuộc tính: data-cat="os", data-fmt="pptx"
+                             ================================================== -->
+                        <article class="doc-card" data-cat="os" data-fmt="pptx">
+                            <div class="card-top">
+                                <div class="file-icon-box icon-pptx" aria-hidden="true">
+                                    💻
+                                </div>
+                                <div class="card-badges">
+                                    <span class="badge-size">21.0 MB</span>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <span class="card-category-name">Hệ điều hành &amp; Mạng</span>
+                                <h2 class="card-title">Bài Giảng Giao Thức TCP/IP &amp; Bảo Mật Hạ Tầng Doanh Nghiệp</h2>
+                                <p class="card-excerpt">
+                                    Phân tích chuyên sâu mô hình OSI 7 tầng, định tuyến tĩnh/động OSPF, BGP và cơ chế chống tấn công DDoS hiện đại.
+                                </p>
+                            </div>
+
+                            <div class="card-meta-row">
+                                <div class="card-rating" aria-label="Đánh giá 4.7 sao">
+                                    <span>⭐⭐⭐⭐☆</span>
+                                    <span>4.7</span>
+                                </div>
+                                <div class="card-downloads">
+                                    <span>📥</span>
+                                    <span>650 tải</span>
+                                </div>
+                            </div>
+
+                            <div class="progress-box">
+                                <div class="progress-label-row">
+                                    <span>Độ tin cậy</span>
+                                    <span>90%</span>
+                                </div>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill" style="--target-width: 90%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="card-actions">
+                                <label for="modal-preview-toggle" class="btn-card-preview">
+                                    Xem trước
+                                </label>
+                                <a href="#download-doc7" class="btn-card-download" download>
+                                    <span>Tải về</span>
+                                    <span aria-hidden="true">↓</span>
+                                </a>
+                            </div>
+                        </article>
+
+
+                        <!-- ==================================================
+                             TÀI LIỆU 8: TEMPLATE BỘ GIAO DIỆN UI KIT (ZIP)
+                             Thuộc tính: data-cat="web", data-fmt="zip"
+                             ================================================== -->
+                        <article class="doc-card" data-cat="web" data-fmt="zip">
+                            <div class="card-top">
+                                <div class="file-icon-box icon-zip" aria-hidden="true">
+                                    🎨
+                                </div>
+                                <div class="card-badges">
+                                    <span class="badge-tag badge-new">UI KIT</span>
+                                    <span class="badge-size">12.5 MB</span>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <span class="card-category-name">Thiết kế Web &amp; UI</span>
+                                <h2 class="card-title">Gói Giao Diện UI Kit Thẻ Card, Nút Bấm &amp; Hiệu Ứng CSS</h2>
+                                <p class="card-excerpt">
+                                    Bao gồm hơn 50 components dựng sẵn với CSS Flexbox, Grid, biến :root có sẵn bảng màu Dark/Light Mode thuận tiện tái sử dụng.
+                                </p>
+                            </div>
+
+                            <div class="card-meta-row">
+                                <div class="card-rating" aria-label="Đánh giá 4.9 sao">
+                                    <span>⭐⭐⭐⭐⭐</span>
+                                    <span>4.9</span>
+                                </div>
+                                <div class="card-downloads">
+                                    <span>📥</span>
+                                    <span>1,780 tải</span>
+                                </div>
+                            </div>
+
+                            <div class="progress-box">
+                                <div class="progress-label-row">
+                                    <span>Độ tin cậy</span>
+                                    <span>97%</span>
+                                </div>
+                                <div class="progress-bar-track">
+                                    <div class="progress-bar-fill" style="--target-width: 97%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="card-actions">
+                                <label for="modal-preview-toggle" class="btn-card-preview">
+                                    Xem trước
+                                </label>
+                                <a href="#download-doc8" class="btn-card-download" download>
+                                    <span>Tải về</span>
+                                    <span aria-hidden="true">↓</span>
+                                </a>
+                            </div>
+                        </article>
+
+                    </div><!-- /.docs-grid -->
+
+                </section><!-- /.content-area -->
+
+            </div><!-- /.repo-layout -->
+
+            <!-- ==============================================================
+                 PHẦN 3: KHU VỰC KÊU GỌI ĐÓNG GÓP - PARALLAX BANNER (BÀI 4 TUẦN 5)
+                 Sử dụng background-attachment: fixed để ảnh nền cuộn chậm hơn nội dung
+                 Tạo cảm giác không gian 3D ấn tượng mà không làm giảm hiệu suất
+                 ============================================================== -->
+            <section class="parallax-cta-section" aria-label="Kêu gọi chia sẻ tài liệu">
+                <span style="font-size: var(--font-size-xs); font-weight: 700; color: var(--color-active); text-transform: uppercase; letter-spacing: 0.08em;">
+                    🚀 KHO TRI THỨC MỞ CHO SINH VIÊN (PARALLAX EFFECT)
+                </span>
+                <h2 style="font-size: var(--font-size-xl); font-weight: 700; max-width: 620px; line-height: 1.3;">
+                    Bạn có tài liệu học tập hoặc mã nguồn đồ án hay muốn chia sẻ?
+                </h2>
+                <p style="font-size: var(--font-size-sm); color: #94A3B8; max-width: 540px; line-height: 1.6;">
+                    Đóng góp cùng xây dựng kho tri thức số MyVault vững mạnh. Mọi tài liệu đều được kiểm duyệt, phân loại đa năng và tối ưu tốc độ tải.
+                </p>
+                <a href="#upload-modal" class="btn-card-download" style="padding: 12px 28px; font-size: var(--font-size-sm); text-decoration: none;">
+                    <span>Đóng góp tài liệu ngay</span>
+                    <span>→</span>
+                </a>
+            </section>
 
         </div><!-- /.container -->
-    </main>
+    </main><!-- /#main-content -->
 
 
-    <!-- =========================================================
-         FOOTER DÙNG CHUNG
-    ========================================================== -->
+    <!-- ======================================================================
+         MODAL XEM TRƯỚC TÀI LIỆU (QUICK PREVIEW MODAL) - 100% THUẦN CSS
+         Được kích hoạt bởi label for="modal-preview-toggle"
+         Không dùng 1 dòng JavaScript nào!
+         ====================================================================== -->
+    <div class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-preview-title">
+        <div class="modal-box">
+            
+            <!-- Phần đầu Modal -->
+            <div class="modal-header">
+                <h3 id="modal-preview-title">📖 Xem trước tài liệu: MyVault Repository</h3>
+                <!-- Nút đóng gắn với label uncheck checkbox -->
+                <label for="modal-preview-toggle" class="modal-close-btn" aria-label="Đóng cửa sổ xem trước">
+                    &times;
+                </label>
+            </div>
+
+            <!-- Thân Modal -->
+            <div class="modal-body">
+                <div class="modal-meta-grid">
+                    <div class="modal-meta-item">
+                        <span class="modal-meta-label">Định dạng file</span>
+                        <span class="modal-meta-val">Tài liệu số hóa chuẩn (PDF/DOCX)</span>
+                    </div>
+                    <div class="modal-meta-item">
+                        <span class="modal-meta-label">Bản quyền &amp; Giấy phép</span>
+                        <span class="modal-meta-val">Giáo dục đại học (Free to study)</span>
+                    </div>
+                    <div class="modal-meta-item">
+                        <span class="modal-meta-label">Được biên soạn bởi</span>
+                        <span class="modal-meta-val">Khoa CNTT - MyVault Lab</span>
+                    </div>
+                    <div class="modal-meta-item">
+                        <span class="modal-meta-label">Tình trạng kiểm duyệt</span>
+                        <span class="modal-meta-val" style="color: var(--color-zip);">✅ Đã kiểm tra virus &amp; mã độc</span>
+                    </div>
+                </div>
+
+                <h4 style="font-size: var(--font-size-md); font-weight: var(--font-weight-bold); margin-top: var(--space-xs);">
+                    Tóm tắt mục lục nội dung:
+                </h4>
+                <ul style="list-style: disc; padding-left: 20px; display: flex; flex-direction: column; gap: 4px;">
+                    <li><strong>Chương 1:</strong> Tổng quan kiến trúc Layout Web hiện đại (Box Model, Flexbox &amp; Grid).</li>
+                    <li><strong>Chương 2:</strong> Thiết kế hệ thống Design System với CSS Variables tại :root.</li>
+                    <li><strong>Chương 3:</strong> Tư duy thiết kế Mobile-First và tối ưu Breakpoints đa thiết bị.</li>
+                    <li><strong>Chương 4:</strong> Hiệu ứng chuyển động mượt mà bằng CSS Keyframes &amp; GPU Acceleration.</li>
+                    <li><strong>Chương 5:</strong> Thực hành dự án không dùng JavaScript với Checkbox/Radio Hack.</li>
+                </ul>
+
+                <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); background: var(--color-background); padding: 10px; border-radius: var(--radius-sm); border-left: 3px solid var(--color-primary);">
+                    📌 <em>Ghi chú: Toàn bộ tương tác bật mở và tắt cửa sổ này hoàn toàn vận hành trên cơ chế CSS :has() và Checkbox Toggle, đảm bảo trang web của bạn đạt hiệu năng 100/100 trên Google Lighthouse.</em>
+                </p>
+            </div>
+
+            <!-- Chân Modal -->
+            <div class="modal-footer">
+                <label for="modal-preview-toggle" class="btn-card-preview" style="cursor: pointer;">
+                    Đóng cửa sổ
+                </label>
+                <a href="#download-direct" class="btn-card-download" style="text-decoration: none;">
+                    <span>Tải tài liệu ngay</span>
+                    <span>↓</span>
+                </a>
+            </div>
+
+        </div><!-- /.modal-box -->
+    </div><!-- /.modal-overlay -->
+
+
+    <!-- ======================================================================
+         NÚT NỔI TƯƠNG TÁC (FLOATING ACTION BUTTON - FAB)
+         Áp dụng bài tập nâng cao Tuần 5: position: fixed, @keyframes pulse
+         ====================================================================== -->
+    <a href="#upload-modal" class="fab-upload" aria-label="Đóng góp tài liệu mới vào kho">
+        <span>+</span>
+        <span class="fab-tooltip">Đóng góp tài liệu mới</span>
+    </a>
+
+
+    <!-- ======================================================================
+         FOOTER DÙNG CHUNG CỦA HỆ THỐNG
+         Kế thừa từ bộ khung dự án nhóm
+         ====================================================================== -->
     <footer>
         <div class="container footer-inner">
 
