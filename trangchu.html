@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MyVault — Trang chủ hệ thống kho tài liệu cá nhân">
+    <meta name="description" content="MyVault — Trang chủ hệ thống kho tài liệu cá nhân. Lưu trữ, tổ chức và truy cập tài liệu học tập trong một không gian gọn gàng.">
     <title>Trang chủ — MyVault</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<!-- Thêm class home-page để scope CSS riêng, không ảnh hưởng trangkhotailieu.html -->
+<body class="home-page">
 
-    <!-- Skip link: Accessibility -->
+    <!-- Skip link: Accessibility — nhấn Tab để hiện -->
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
 
     <!-- =========================================================
          HEADER WRAPPER
-         Chứa header (brand) + input checkbox + label hamburger + nav
-         Cấu trúc này bắt buộc để CSS-only hamburger hoạt động:
-         .nav-toggle (checkbox) phải là anh em (sibling) của nav
+         Cấu trúc bắt buộc: checkbox → label → nav phải là siblings
+         để CSS-only hamburger selector (~) hoạt động đúng
     ========================================================== -->
     <div class="header-wrapper">
 
@@ -24,19 +24,19 @@
             <div class="container header-inner">
 
                 <!-- Brand / Logo -->
-                <a class="brand" href="trangchu.html" aria-label="MyVault — Trang chủ">
+                <a class="brand" href="trangchu.html" aria-label="MyVault — Về trang chủ">
                     <span class="brand-name">My<span>Vault</span></span>
                     <span class="brand-tagline">Personal Document &amp; Knowledge Hub</span>
                 </a>
 
-                <!-- Checkbox cho CSS-only hamburger (phải là sibling của nav) -->
+                <!-- Checkbox ẩn — điều khiển menu mobile qua CSS -->
                 <input
                     type="checkbox"
                     id="nav-toggle"
                     class="nav-toggle"
                     aria-hidden="true"
                 >
-                <!-- Label hamburger — chỉ hiển thị trên mobile -->
+                <!-- Label hamburger — chỉ xuất hiện trên mobile -->
                 <label
                     for="nav-toggle"
                     class="nav-toggle-label"
@@ -47,13 +47,16 @@
                     <span></span>
                 </label>
 
+                <!-- CTA header — chỉ hiển thị trên tablet+ (ẩn trên mobile) -->
+                <a href="trangkhotailieu.html" class="home-header-cta" aria-label="Vào kho tài liệu">
+                    Vào kho tài liệu
+                </a>
+
             </div><!-- /.container.header-inner -->
         </header>
 
-        <!-- =====================================================
-             NAV — phải là sibling của .nav-toggle để CSS hack hoạt động
-             Selector: .nav-toggle:checked ~ nav .nav-menu
-        ====================================================== -->
+        <!-- NAV: phải là sibling của .nav-toggle để selector hoạt động -->
+        <!-- Selector: .nav-toggle:checked ~ nav .nav-menu { max-height: 400px } -->
         <nav aria-label="Điều hướng chính">
             <div class="container">
                 <div class="nav-menu">
@@ -68,7 +71,6 @@
                                 Kho tài liệu
                             </a>
                         </li>
-                        <!-- Thành viên có thể thêm mục menu tại đây -->
                     </ul>
                 </div><!-- /.nav-menu -->
             </div><!-- /.container -->
@@ -78,31 +80,647 @@
 
 
     <!-- =========================================================
-         MAIN CONTENT
-         ✏️  KHU VỰC ĐỂ TRỐNG — THÀNH VIÊN PHỤ TRÁCH TRANG NÀY
-             hãy xây dựng nội dung bên trong thẻ <main> này.
-         ⚠️  Không chỉnh sửa: header, nav, footer, style.css
+         MAIN — Nội dung trang chủ MyVault
+         Toàn bộ 8 sections được xây dựng bằng Semantic HTML5 chuẩn mực,
+         100% không dùng JavaScript, tối ưu hóa Accessibility & UX.
     ========================================================== -->
     <main id="main-content">
-        <div class="container">
 
-            <!-- ================================================
-                 VÙNG NỘI DUNG TRANG CHỦ
-                 Thành viên 1 thêm nội dung tại đây
-            ================================================= -->
+        <!-- =====================================================
+             SECTION 1: HERO SECTION
+             - Eyebrow / Welcome Badge
+             - Headline truyền cảm hứng & Description súc tích
+             - Semantic Search Bar với Micro-interactions
+             - Nhóm CTA Buttons
+        ====================================================== -->
+        <section class="home-hero" aria-labelledby="hero-headline">
+            <div class="container home-hero-container">
 
-            <div class="main-placeholder" role="region" aria-label="Khu vực nội dung trang chủ">
-                <div class="placeholder-icon" aria-hidden="true">🏠</div>
-                <p>Nội dung Trang chủ</p>
-                <small>Thành viên phụ trách: hãy xây dựng nội dung bên trong &lt;main&gt; tại đây</small>
+                <div class="home-hero-content">
+
+                    <!-- Welcome Badge / Eyebrow -->
+                    <div class="home-hero-badge" role="status">
+                        <span class="home-badge-dot" aria-hidden="true"></span>
+                        <span class="home-badge-text">✦ HỆ THỐNG KHO TRI THỨC CÁ NHÂN THÔNG MINH</span>
+                    </div>
+
+                    <!-- Headline truyền cảm hứng chính (h1 duy nhất) -->
+                    <h1 id="hero-headline" class="home-hero-title">
+                        Tổ chức kiến thức thông minh,<br>
+                        <span class="home-hero-title-gradient">Mở lối tư duy sáng tạo.</span>
+                    </h1>
+
+                    <!-- Mô tả súc tích định vị sản phẩm -->
+                    <p class="home-hero-description">
+                        MyVault giúp bạn lưu trữ, liên kết và khai phóng tiềm năng từ mọi tài liệu, 
+                        bài giảng và ghi chú cá nhân trong một không gian tối giản, trực quan và bảo mật.
+                    </p>
+
+                    <!-- Tích hợp Search Bar ngay trong Hero (Semantic HTML + Micro-interaction) -->
+                    <div class="home-hero-search-box" role="search">
+                        <form class="home-hero-search-form" action="trangkhotailieu.html" method="get">
+                            <!-- Label ẩn về thị giác nhưng hỗ trợ Screen Reader hoàn hảo -->
+                            <label for="hero-search-input" class="home-visually-hidden">
+                                Tìm kiếm tài liệu, giáo trình, ghi chú trong MyVault
+                            </label>
+                            
+                            <div class="home-search-input-wrapper">
+                                <span class="home-search-icon" aria-hidden="true">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                    </svg>
+                                </span>
+
+                                <input 
+                                    type="search" 
+                                    id="hero-search-input" 
+                                    name="q" 
+                                    class="home-search-field" 
+                                    placeholder="Tìm kiếm tài liệu, bài giảng, từ khóa..." 
+                                    autocomplete="off"
+                                    aria-label="Tìm kiếm trong kho tài liệu"
+                                >
+
+                                <span class="home-search-shortcut" aria-hidden="true" title="Phím tắt tìm kiếm">⌘K</span>
+                            </div>
+
+                            <button type="submit" class="home-search-submit-btn" aria-label="Thực hiện tìm kiếm">
+                                <span>Tìm kiếm</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </button>
+                        </form>
+                    </div><!-- /.home-hero-search-box -->
+
+                    <!-- Nhóm CTA Buttons -->
+                    <div class="home-hero-cta-group">
+                        <a href="trangkhotailieu.html" class="btn-primary" aria-label="Khám phá ngay kho tài liệu MyVault">
+                            <span>Khám phá kho tài liệu</span>
+                            <span class="btn-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <a href="#vault-overview" class="btn-secondary" aria-label="Xem tổng quan hệ thống kho lưu trữ">
+                            <span>Tổng quan kho lưu trữ</span>
+                        </a>
+                    </div>
+
+                </div><!-- /.home-hero-content -->
+
+            </div><!-- /.container -->
+        </section><!-- /.home-hero -->
+
+
+        <!-- =====================================================
+             SECTION 2: QUICK ACCESS SECTION (3D INTERACTIVE FLIP CARDS)
+             - Kỹ thuật CSS 3D Flip Card (perspective, preserve-3d, backface-visibility)
+             - Lật 180 độ mượt mà khi :hover hoặc :focus-within
+             - Mặt trước: Icon + Tiêu đề + Tag định lượng
+             - Mặt sau: Mô tả chi tiết + CTA hành động chuyên nghiệp
+        ====================================================== -->
+        <section class="home-section home-quickaccess" aria-labelledby="quickaccess-title">
+            <div class="container">
+
+                <div class="home-section-header">
+                    <span class="home-section-eyebrow">✦ TRUY CẬP NHANH</span>
+                    <h2 id="quickaccess-title" class="home-section-heading">Không Gian Làm Việc Trực Quan</h2>
+                    <p class="home-section-subheading">
+                        Rê chuột hoặc chạm vào các thẻ để kích hoạt hiệu ứng lật 3D khám phá nội dung chi tiết của từng phân mục.
+                    </p>
+                </div>
+
+                <div class="home-flip-grid">
+
+                    <!-- Flip Card 1: Tài liệu học tập -->
+                    <article class="home-flip-card" tabindex="0" aria-label="Thẻ Tài liệu học tập. Rê chuột hoặc ấn Enter để lật thẻ.">
+                        <div class="home-flip-card-inner">
+                            <!-- Mặt trước -->
+                            <div class="home-flip-card-front">
+                                <div class="home-flip-front-header">
+                                    <span class="home-flip-tag home-flip-tag--blue">Học phần</span>
+                                    <span class="home-flip-flip-badge" aria-hidden="true">↻ Lật</span>
+                                </div>
+                                <div class="home-flip-icon-box" aria-hidden="true">📚</div>
+                                <h3 class="home-flip-title">Tài liệu học tập</h3>
+                                <p class="home-flip-hint">48 tài liệu đã phân loại</p>
+                            </div>
+                            <!-- Mặt sau -->
+                            <div class="home-flip-card-back">
+                                <span class="home-flip-back-badge">✦ THƯ MỤC CHÍNH</span>
+                                <h3 class="home-flip-back-title">Tài liệu học tập</h3>
+                                <p class="home-flip-back-desc">
+                                    Giáo trình đại học, slide bài giảng, đề cương ôn thi và tài liệu chuyên ngành phân loại theo từng học kỳ.
+                                </p>
+                                <a href="trangkhotailieu.html" class="home-flip-action-btn">
+                                    <span>Mở thư mục học tập</span>
+                                    <span class="btn-arrow" aria-hidden="true">→</span>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Flip Card 2: Ghi chú nghiên cứu -->
+                    <article class="home-flip-card" tabindex="0" aria-label="Thẻ Ghi chú nghiên cứu. Rê chuột hoặc ấn Enter để lật thẻ.">
+                        <div class="home-flip-card-inner">
+                            <!-- Mặt trước -->
+                            <div class="home-flip-card-front">
+                                <div class="home-flip-front-header">
+                                    <span class="home-flip-tag home-flip-tag--purple">Smart Notes</span>
+                                    <span class="home-flip-flip-badge" aria-hidden="true">↻ Lật</span>
+                                </div>
+                                <div class="home-flip-icon-box" aria-hidden="true">📝</div>
+                                <h3 class="home-flip-title">Ghi chú nghiên cứu</h3>
+                                <p class="home-flip-hint">Markdown &amp; Zettelkasten</p>
+                            </div>
+                            <!-- Mặt sau -->
+                            <div class="home-flip-card-back">
+                                <span class="home-flip-back-badge">✦ BỘ NHỚ THỨ HAI</span>
+                                <h3 class="home-flip-back-title">Ghi chú nghiên cứu</h3>
+                                <p class="home-flip-back-desc">
+                                    Tập hợp các ý tưởng tóm tắt, trích dẫn bài báo khoa học và ghi chú dạng nguyên tử liên kết chéo.
+                                </p>
+                                <a href="trangkhotailieu.html" class="home-flip-action-btn">
+                                    <span>Xem toàn bộ ghi chú</span>
+                                    <span class="btn-arrow" aria-hidden="true">→</span>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Flip Card 3: Dự án & Thực hành -->
+                    <article class="home-flip-card" tabindex="0" aria-label="Thẻ Dự án và Thực hành. Rê chuột hoặc ấn Enter để lật thẻ.">
+                        <div class="home-flip-card-inner">
+                            <!-- Mặt trước -->
+                            <div class="home-flip-card-front">
+                                <div class="home-flip-front-header">
+                                    <span class="home-flip-tag home-flip-tag--cyan">Mã nguồn</span>
+                                    <span class="home-flip-flip-badge" aria-hidden="true">↻ Lật</span>
+                                </div>
+                                <div class="home-flip-icon-box" aria-hidden="true">💻</div>
+                                <h3 class="home-flip-title">Dự án &amp; Mã nguồn</h3>
+                                <p class="home-flip-hint">HTML, CSS, JS &amp; Frameworks</p>
+                            </div>
+                            <!-- Mặt sau -->
+                            <div class="home-flip-card-back">
+                                <span class="home-flip-back-badge">✦ THỰC HÀNH LAB</span>
+                                <h3 class="home-flip-back-title">Dự án &amp; Mã nguồn</h3>
+                                <p class="home-flip-back-desc">
+                                    Lưu trữ source code mẫu, kiến trúc hệ thống và tài liệu kỹ thuật dành cho các đồ án môn học.
+                                </p>
+                                <a href="trangkhotailieu.html" class="home-flip-action-btn">
+                                    <span>Khám phá dự án</span>
+                                    <span class="btn-arrow" aria-hidden="true">→</span>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Flip Card 4: Thư viện & Tham khảo -->
+                    <article class="home-flip-card" tabindex="0" aria-label="Thẻ Tài liệu yêu thích. Rê chuột hoặc ấn Enter để lật thẻ.">
+                        <div class="home-flip-card-inner">
+                            <!-- Mặt trước -->
+                            <div class="home-flip-card-front">
+                                <div class="home-flip-front-header">
+                                    <span class="home-flip-tag home-flip-tag--amber">Đã ghim</span>
+                                    <span class="home-flip-flip-badge" aria-hidden="true">↻ Lật</span>
+                                </div>
+                                <div class="home-flip-icon-box" aria-hidden="true">⭐</div>
+                                <h3 class="home-flip-title">Tài liệu yêu thích</h3>
+                                <p class="home-flip-hint">34 tài liệu ưu tiên cao</p>
+                            </div>
+                            <!-- Mặt sau -->
+                            <div class="home-flip-card-back">
+                                <span class="home-flip-back-badge">✦ TRUY CẬP TỐC HÀNH</span>
+                                <h3 class="home-flip-back-title">Tài liệu yêu thích</h3>
+                                <p class="home-flip-back-desc">
+                                    Những tài liệu quý giá được đánh dấu sao, sẵn sàng tra cứu nhanh bất kỳ lúc nào bạn cần học tập hay làm việc.
+                                </p>
+                                <a href="trangkhotailieu.html" class="home-flip-action-btn">
+                                    <span>Kho mục yêu thích</span>
+                                    <span class="btn-arrow" aria-hidden="true">→</span>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                </div><!-- /.home-flip-grid -->
+
+            </div><!-- /.container -->
+        </section><!-- /.home-quickaccess -->
+
+
+        <!-- =====================================================
+             SECTION 3: RECENT DOCUMENTS SECTION
+             - Danh sách file gần đây
+             - Icon định dạng file chuẩn: PDF, Docx, Code, Sheet
+             - Tên tài liệu ngữ nghĩa & Thẻ <time>
+             - Quick Action buttons
+        ====================================================== -->
+        <section class="home-section home-recent" aria-labelledby="recent-docs-title">
+            <div class="container">
+
+                <div class="home-section-header">
+                    <span class="home-section-eyebrow">✦ HOẠT ĐỘNG GẦN ĐÂY</span>
+                    <h2 id="recent-docs-title" class="home-section-heading">Tài Liệu Cập Nhật Mới Nhất</h2>
+                    <p class="home-section-subheading">
+                        Theo dõi tiến trình học tập và tiếp tục công việc đang dang dở từ lần làm việc trước.
+                    </p>
+                </div>
+
+                <div class="home-recent-table-wrapper">
+                    <ul class="home-recent-list" role="list">
+
+                        <!-- Item 1: PDF -->
+                        <li class="home-recent-item">
+                            <div class="home-recent-main">
+                                <span class="home-file-badge home-file-badge--pdf" aria-label="Định dạng tệp PDF">
+                                    PDF
+                                </span>
+                                <div class="home-file-meta">
+                                    <h3 class="home-file-name">Giao-trinh-Kien-truc-Web-Semantic-HTML5.pdf</h3>
+                                    <span class="home-file-subtext">Học phần Thiết kế Web • 3.4 MB</span>
+                                </div>
+                            </div>
+                            <div class="home-recent-info">
+                                <time class="home-file-time" datetime="2026-10-09T17:30">Vừa xong (10 phút trước)</time>
+                                <div class="home-file-actions">
+                                    <a href="trangkhotailieu.html" class="home-action-btn" aria-label="Xem chi tiết tệp Giao-trinh-Kien-truc-Web-Semantic-HTML5.pdf">
+                                        Xem
+                                    </a>
+                                    <a href="trangkhotailieu.html" class="home-action-btn home-action-btn--primary" aria-label="Mở tệp">
+                                        Mở
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+
+                        <!-- Item 2: DOCX -->
+                        <li class="home-recent-item">
+                            <div class="home-recent-main">
+                                <span class="home-file-badge home-file-badge--docx" aria-label="Định dạng tệp DOCX">
+                                    DOC
+                                </span>
+                                <div class="home-file-meta">
+                                    <h3 class="home-file-name">Huong-dan-Chuan-Modern-CSS-Grid-Flexbox.docx</h3>
+                                    <span class="home-file-subtext">Tài liệu tham khảo • 1.2 MB</span>
+                                </div>
+                            </div>
+                            <div class="home-recent-info">
+                                <time class="home-file-time" datetime="2026-10-09T15:00">2 giờ trước</time>
+                                <div class="home-file-actions">
+                                    <a href="trangkhotailieu.html" class="home-action-btn" aria-label="Xem chi tiết">
+                                        Xem
+                                    </a>
+                                    <a href="trangkhotailieu.html" class="home-action-btn home-action-btn--primary" aria-label="Mở tệp">
+                                        Mở
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+
+                        <!-- Item 3: CODE -->
+                        <li class="home-recent-item">
+                            <div class="home-recent-main">
+                                <span class="home-file-badge home-file-badge--code" aria-label="Định dạng mã nguồn Code">
+                                    SRC
+                                </span>
+                                <div class="home-file-meta">
+                                    <h3 class="home-file-name">Zettelkasten-Knowledge-Framework-Setup.code</h3>
+                                    <span class="home-file-subtext">Hệ thống ghi chú • 45 KB</span>
+                                </div>
+                            </div>
+                            <div class="home-recent-info">
+                                <time class="home-file-time" datetime="2026-10-08T20:15">Hôm qua</time>
+                                <div class="home-file-actions">
+                                    <a href="trangkhotailieu.html" class="home-action-btn" aria-label="Xem chi tiết">
+                                        Xem
+                                    </a>
+                                    <a href="trangkhotailieu.html" class="home-action-btn home-action-btn--primary" aria-label="Mở tệp">
+                                        Mở
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+
+                        <!-- Item 4: SHEET -->
+                        <li class="home-recent-item">
+                            <div class="home-recent-main">
+                                <span class="home-file-badge home-file-badge--sheet" aria-label="Định dạng bảng tính Spreadsheet">
+                                    XLS
+                                </span>
+                                <div class="home-file-meta">
+                                    <h3 class="home-file-name">Ke-hoach-On-tap-Mon-Hoc-Ky-Nang-Web.xlsx</h3>
+                                    <span class="home-file-subtext">Kế hoạch cá nhân • 280 KB</span>
+                                </div>
+                            </div>
+                            <div class="home-recent-info">
+                                <time class="home-file-time" datetime="2026-10-07T09:00">3 ngày trước</time>
+                                <div class="home-file-actions">
+                                    <a href="trangkhotailieu.html" class="home-action-btn" aria-label="Xem chi tiết">
+                                        Xem
+                                    </a>
+                                    <a href="trangkhotailieu.html" class="home-action-btn home-action-btn--primary" aria-label="Mở tệp">
+                                        Mở
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div><!-- /.home-recent-table-wrapper -->
+
+                <div class="home-recent-footer">
+                    <a href="trangkhotailieu.html" class="btn-secondary" aria-label="Xem toàn bộ danh sách tệp trong kho">
+                        Xem tất cả tài liệu trong kho →
+                    </a>
+                </div>
+
+            </div><!-- /.container -->
+        </section><!-- /.home-recent -->
+
+
+        <!-- =====================================================
+             SECTION 4: KNOWLEDGE CATEGORIES SECTION
+             - Phân loại rõ ràng: Study, Programming, Design, Work, Personal
+             - Document Counts chân thực
+             - Màu sắc nhận diện tinh tế đồng bộ Design System
+        ====================================================== -->
+        <section class="home-section home-categories" aria-labelledby="categories-title">
+            <div class="container">
+
+                <div class="home-section-header">
+                    <span class="home-section-eyebrow">✦ DANH MỤC PHÂN LOẠI</span>
+                    <h2 id="categories-title" class="home-section-heading">Cấu Trúc Tri Thức Chuyên Biệt</h2>
+                    <p class="home-section-subheading">
+                        Tất cả tài liệu được tổ chức khoa học theo từng chuyên đề giúp việc tra cứu diễn ra tức thì.
+                    </p>
+                </div>
+
+                <div class="home-categories-grid">
+
+                    <!-- Category 1: Study -->
+                    <a href="trangkhotailieu.html" class="home-category-card" aria-label="Danh mục Học tập: 48 tài liệu">
+                        <div class="home-category-icon-wrapper home-cat-color--study">
+                            <span aria-hidden="true">📖</span>
+                        </div>
+                        <div class="home-category-text">
+                            <h3 class="home-category-name">Học tập &amp; Giáo trình</h3>
+                            <p class="home-category-desc">Bài giảng đại học, đồ án môn học và tóm tắt ôn thi</p>
+                            <span class="home-category-count">48 tài liệu</span>
+                        </div>
+                    </a>
+
+                    <!-- Category 2: Programming -->
+                    <a href="trangkhotailieu.html" class="home-category-card" aria-label="Danh mục Lập trình: 62 tài liệu">
+                        <div class="home-category-icon-wrapper home-cat-color--code">
+                            <span aria-hidden="true">⚙️</span>
+                        </div>
+                        <div class="home-category-text">
+                            <h3 class="home-category-name">Lập trình &amp; Công nghệ</h3>
+                            <p class="home-category-desc">Code snippets, cheatsheets, tài liệu API &amp; thuật toán</p>
+                            <span class="home-category-count">62 tài liệu</span>
+                        </div>
+                    </a>
+
+                    <!-- Category 3: Design -->
+                    <a href="trangkhotailieu.html" class="home-category-card" aria-label="Danh mục Thiết kế: 35 tài liệu">
+                        <div class="home-category-icon-wrapper home-cat-color--design">
+                            <span aria-hidden="true">🎨</span>
+                        </div>
+                        <div class="home-category-text">
+                            <h3 class="home-category-name">Thiết kế &amp; UI/UX</h3>
+                            <p class="home-category-desc">Design systems, tài nguyên đồ họa và nguyên mẫu giao diện</p>
+                            <span class="home-category-count">35 tài liệu</span>
+                        </div>
+                    </a>
+
+                    <!-- Category 4: Work -->
+                    <a href="trangkhotailieu.html" class="home-category-card" aria-label="Danh mục Công việc: 29 tài liệu">
+                        <div class="home-category-icon-wrapper home-cat-color--work">
+                            <span aria-hidden="true">💼</span>
+                        </div>
+                        <div class="home-category-text">
+                            <h3 class="home-category-name">Công việc &amp; Báo cáo</h3>
+                            <p class="home-category-desc">Kế hoạch dự án, biên bản họp và tài liệu nghiệp vụ</p>
+                            <span class="home-category-count">29 tài liệu</span>
+                        </div>
+                    </a>
+
+                    <!-- Category 5: Personal -->
+                    <a href="trangkhotailieu.html" class="home-category-card" aria-label="Danh mục Cá nhân: 18 tài liệu">
+                        <div class="home-category-icon-wrapper home-cat-color--personal">
+                            <span aria-hidden="true">🔒</span>
+                        </div>
+                        <div class="home-category-text">
+                            <h3 class="home-category-name">Ghi chép Cá nhân</h3>
+                            <p class="home-category-desc">Nhật ký phát triển, mục tiêu định hướng và ý tưởng mới</p>
+                            <span class="home-category-count">18 tài liệu</span>
+                        </div>
+                    </a>
+
+                </div><!-- /.home-categories-grid -->
+
+            </div><!-- /.container -->
+        </section><!-- /.home-categories -->
+
+
+        <!-- =====================================================
+             SECTION 5: VAULT OVERVIEW SECTION (STATISTICS & PROGRESS)
+             - Thống kê Total Docs, Categories, Favorites
+             - Storage Progress Bar với CSS gradient mượt mà
+        ====================================================== -->
+        <section class="home-section home-overview" id="vault-overview" aria-labelledby="overview-title">
+            <div class="container">
+
+                <div class="home-section-header">
+                    <span class="home-section-eyebrow">✦ TỔNG QUAN HỆ THỐNG</span>
+                    <h2 id="overview-title" class="home-section-heading">Tình Trạng Kho Lưu Trữ</h2>
+                    <p class="home-section-subheading">
+                        Dữ liệu thống kê trực tiếp tình trạng lưu trữ và phân bố tài nguyên trên MyVault.
+                    </p>
+                </div>
+
+                <div class="home-overview-wrapper">
+
+                    <!-- Hàng thẻ thống kê -->
+                    <div class="home-stats-grid">
+                        <article class="home-stat-card">
+                            <div class="home-stat-number">192</div>
+                            <h3 class="home-stat-label">Tổng số tài liệu</h3>
+                            <p class="home-stat-desc">Đã được đồng bộ và lập chỉ mục</p>
+                        </article>
+
+                        <article class="home-stat-card">
+                            <div class="home-stat-number">5</div>
+                            <h3 class="home-stat-label">Danh mục chính</h3>
+                            <p class="home-stat-desc">Bao quát toàn diện các lĩnh vực</p>
+                        </article>
+
+                        <article class="home-stat-card">
+                            <div class="home-stat-number">34</div>
+                            <h3 class="home-stat-label">Tài liệu yêu thích</h3>
+                            <p class="home-stat-desc">Đã được đánh dấu sao ưu tiên</p>
+                        </article>
+                    </div>
+
+                    <!-- Khối thanh tiến trình dung lượng (Storage Progress Bar) -->
+                    <div class="home-storage-box">
+                        <div class="home-storage-header">
+                            <div class="home-storage-label-group">
+                                <span class="home-storage-title">Dung lượng kho lưu trữ cá nhân</span>
+                                <span class="home-storage-status">Gói Tiêu Chuẩn (15 GB)</span>
+                            </div>
+                            <div class="home-storage-value">
+                                <strong>4.8 GB</strong> / 15 GB (32%)
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar Semantic kết hợp CSS Gradient Styling -->
+                        <div class="home-progress-container" role="progressbar" aria-valuenow="32" aria-valuemin="0" aria-valuemax="100" aria-label="Tiến trình sử dụng dung lượng lưu trữ: 32%">
+                            <div class="home-progress-fill" style="width: 32%;"></div>
+                        </div>
+
+                        <div class="home-storage-footer">
+                            <span>✦ Còn trống 10.2 GB khả dụng</span>
+                            <span class="home-storage-safe-text">✓ Tự động mã hóa an toàn</span>
+                        </div>
+                    </div><!-- /.home-storage-box -->
+
+                </div><!-- /.home-overview-wrapper -->
+
+            </div><!-- /.container -->
+        </section><!-- /.home-overview -->
+
+
+        <!-- =====================================================
+             SECTION 6: INSPIRATION & DAILY KNOWLEDGE SECTION
+             - Daily Quote (blockquote chuẩn ngữ nghĩa)
+             - Productivity Tips (Active Recall, Pomodoro)
+             - Knowledge Method (Zettelkasten / Second Brain)
+        ====================================================== -->
+        <section class="home-section home-inspiration" aria-labelledby="inspiration-title">
+            <div class="container">
+
+                <div class="home-section-header">
+                    <span class="home-section-eyebrow">✦ TRI THỨC MỖI NGÀY</span>
+                    <h2 id="inspiration-title" class="home-section-heading">Cảm Hứng &amp; Phương Pháp Học Tập</h2>
+                    <p class="home-section-subheading">
+                        Nâng tầm khả năng quản lý kiến thức bằng những phương pháp luận đã được chứng minh hiệu quả.
+                    </p>
+                </div>
+
+                <div class="home-inspiration-grid">
+
+                    <!-- Cột 1: Daily Quote -->
+                    <figure class="home-quote-card">
+                        <div class="home-quote-icon" aria-hidden="true">“</div>
+                        <blockquote class="home-quote-text">
+                            “Bộ não của bạn sinh ra để nảy nở những ý tưởng đột phá, chứ không phải một nơi chật chội chỉ dùng để lưu giữ chúng.”
+                        </blockquote>
+                        <figcaption class="home-quote-author">
+                            — Tiago Forte, <cite>Building a Second Brain</cite>
+                        </figcaption>
+                    </figure>
+
+                    <!-- Cột 2: Productivity Tips -->
+                    <article class="home-tip-card">
+                        <div class="home-tip-header">
+                            <span class="home-tip-badge" aria-hidden="true">⚡ Mẹo Năng Suất</span>
+                            <h3 class="home-tip-title">Chiến Lược Tái Hiện Chủ Động (Active Recall)</h3>
+                        </div>
+                        <p class="home-tip-desc">
+                            Thay vì đọc lại tài liệu một cách thụ động, hãy tự đặt câu hỏi và viết câu trả lời mà không nhìn vào ghi chú. Phương pháp này kích thích trí nhớ dài hạn hiệu quả hơn gấp 3 lần.
+                        </p>
+                        <div class="home-tip-meta">
+                            <span>Quy tắc 20/80 trong tiếp thu kiến thức</span>
+                        </div>
+                    </article>
+
+                    <!-- Cột 3: Knowledge Management Method (Zettelkasten) -->
+                    <article class="home-tip-card home-tip-card--method">
+                        <div class="home-tip-header">
+                            <span class="home-tip-badge home-tip-badge--purple" aria-hidden="true">🧠 Phương Pháp Luận</span>
+                            <h3 class="home-tip-title">Phương Pháp Zettelkasten &amp; Smart Notes</h3>
+                        </div>
+                        <p class="home-tip-desc">
+                            Ghi chú nguyên tử (Atomic Notes): Mỗi ghi chú chỉ chứa đựng duy nhất một ý tưởng trọn vẹn và được liên kết chéo với các tài liệu liên quan để tạo thành một mạng lưới tri thức sống động.
+                        </p>
+                        <div class="home-tip-meta">
+                            <span>Học tập theo cấu trúc mạng lưới (Graph)</span>
+                        </div>
+                    </article>
+
+                </div><!-- /.home-inspiration-grid -->
+
+            </div><!-- /.container -->
+        </section><!-- /.home-inspiration -->
+
+
+        <!-- =====================================================
+             SECTION 7: FINAL CTA SECTION
+             - Box nổi bật với các hành động: "Thêm tài liệu", "Tạo ghi chú", "Sắp xếp kho kiến thức"
+        ====================================================== -->
+        <section class="home-section home-cta" aria-labelledby="cta-title">
+            <div class="container">
+
+                <div class="home-cta-banner">
+                    <p class="home-cta-tag" aria-hidden="true">✦ SẴN SÀNG TỔ CHỨC TRI THỨC?</p>
+                    <h2 id="cta-title" class="home-cta-heading">
+                        Bắt Đầu Xây Dựng Kho Kiến Thức Của Bạn Ngay Hôm Nay
+                    </h2>
+                    <p class="home-cta-subtext">
+                        Đừng để những bài giảng hay ý tưởng quý giá phân tán rải rác. Tập trung tất cả về một kho lưu trữ duy nhất.
+                    </p>
+
+                    <!-- Danh sách các hành động chính -->
+                    <div class="home-cta-action-list">
+                        <a href="trangkhotailieu.html" class="home-cta-btn home-cta-btn--primary">
+                            <span aria-hidden="true">📂</span>
+                            <span>Thêm tài liệu mới</span>
+                        </a>
+                        <a href="trangkhotailieu.html" class="home-cta-btn home-cta-btn--secondary">
+                            <span aria-hidden="true">✏️</span>
+                            <span>Tạo ghi chú nhanh</span>
+                        </a>
+                        <a href="trangkhotailieu.html" class="home-cta-btn home-cta-btn--outline">
+                            <span aria-hidden="true">🗂️</span>
+                            <span>Sắp xếp kho kiến thức</span>
+                        </a>
+                    </div>
+                </div><!-- /.home-cta-banner -->
+
+            </div><!-- /.container -->
+        </section><!-- /.home-cta -->
+
+
+        <!-- =====================================================
+             SECTION 8: LIVE TOAST NOTIFICATION (GÓC MÀN HÌNH - PURE CSS)
+             - Vị trí: position: fixed; bottom: 24px; right: 24px;
+             - Chu kỳ: 5 giây tự lặp lặp vô tận (infinite) bằng @keyframes
+             - Trượt vào -> dừng 2.5s -> trượt ra và mờ dần -> tự động lặp lại
+             - KHÔNG SỬ DỤNG BẤT KỲ DÒNG JAVASCRIPT NÀO!
+             - Tạm dừng animation khi hover (:hover) để người dùng dễ đọc
+        ====================================================== -->
+        <aside class="home-toast-notification" role="status" aria-live="polite" aria-atomic="true">
+            <div class="home-toast-card">
+                <div class="home-toast-icon" aria-hidden="true">✦</div>
+                <div class="home-toast-body">
+                    <p class="home-toast-title">Hoạt động thời gian thực</p>
+                    <p class="home-toast-message">
+                        <strong>Nguyễn Văn A</strong> vừa tải lên tài liệu mới:<br>
+                        <em>“Giao-trinh-Thiet-ke-Web-2026.pdf”</em>
+                    </p>
+                </div>
+                <span class="home-toast-badge" aria-hidden="true">Vừa xong</span>
             </div>
+        </aside><!-- /.home-toast-notification -->
 
-        </div><!-- /.container -->
-    </main>
+    </main><!-- /#main-content -->
 
 
     <!-- =========================================================
-         FOOTER DÙNG CHUNG
+         FOOTER DÙNG CHUNG — giữ nguyên cấu trúc
     ========================================================== -->
     <footer>
         <div class="container footer-inner">
@@ -110,6 +728,7 @@
             <div class="footer-left">
                 <p class="footer-brand">My<span>Vault</span></p>
                 <p class="footer-tagline">Personal Document &amp; Knowledge Hub</p>
+                <p class="footer-copy">&copy; 2024 MyVault — Pham Dang Khoa &amp; Nguyen Dang Nhat</p>
             </div>
 
             <div class="footer-right">
@@ -117,9 +736,6 @@
                     <a href="trangchu.html">Trang chủ</a>
                     <a href="trangkhotailieu.html">Kho tài liệu</a>
                 </nav>
-                <p class="footer-copy">
-                    &copy; 2024 MyVault — Pham Dang Khoa &amp; Nguyen Dang Nhat
-                </p>
             </div>
 
         </div><!-- /.container.footer-inner -->
